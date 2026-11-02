@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURORA Coffee (Bản Mẫu Demo) | Website Đặt Món & Giao Hàng Quán Cà Phê</title>
+  
+  <!-- Preconnect Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Oswald:wght@500;600;700&family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&subset=vietnamese&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sun: {
+              ray: '#FBBF24',        /* Tia nắng vàng mai */
+              amber: '#F59E0B',      /* Hổ phách ấm */
+              gold: '#D97706',       /* Vàng mật ong nồng nàn */
+              honey: '#B45309',      /* Màu caramel mật */
+              glow: '#FEF08A',       /* Quầng sáng mai */
+              canvas: '#FAF5EC',     /* Nền sáng mai ấm áp */
+              card: '#FFFFFF',       /* Nền thẻ tinh khôi */
+              dark: '#1C100B',       /* Đen espresso nồng đượm */
+              coffee: '#2A170F',     /* Nâu cà phê rang mộc */
+              muted: '#78685E',
+              leaf: '#2E7D32',
+              leafSoft: '#E8F5E9'
+            }
+          },
+          fontFamily: {
+            display: ['"Barlow Condensed"', '"Oswald"', 'sans-serif'],
+            heading: ['"Barlow Condensed"', '"Oswald"', 'sans-serif'],
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      background-color: #FAF5EC;
+      color: #1C100B;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+    }
+    .font-drypt {
+      font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 0.95;
+    }
+
+    /* Hiệu ứng tia nắng mai chiếu rọi (Morning Sun Ray Ambiance) */
+    .morning-sunbeam-bg {
+      background-color: #FAF5EC;
+      background-image: 
+        radial-gradient(circle at 12% 15%, rgba(251, 191, 36, 0.22) 0%, rgba(245, 158, 11, 0.08) 35%, transparent 65%),
+        radial-gradient(circle at 88% 8%, rgba(254, 240, 138, 0.28) 0%, rgba(251, 191, 36, 0.06) 40%, transparent 60%),
+        linear-gradient(135deg, rgba(254, 243, 199, 0.3) 0%, transparent 40%),
+        linear-gradient(to right, rgba(230, 200, 160, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(230, 200, 160, 0.12) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+    }
+
+    /* Thẻ nội dung khu vực dưới (Light Bento Card) */
+    .sunlit-card {
+      background: rgba(255, 253, 248, 0.94);
+      box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.14), 0 4px 10px -2px rgba(217, 119, 6, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+    .sunlit-card:hover {
+      background: rgba(255, 255, 255, 0.99);
+      box-shadow: 0 14px 35px -5px rgba(245, 158, 11, 0.28), 0 6px 12px -2px rgba(217, 119, 6, 0.14);
+      border-color: rgba(245, 158, 11, 0.65);
+    }
+
+    /* Khung chữ Hero: mở rộng rộng rãi (760px) để tiêu đề luôn nằm gọn đúng 2 dòng, nền kính ấm sáng viền vàng rực rỡ */
+    .hero-caption-card {
+      width: min(94vw, 760px);
+      max-width: 760px;
+      background: linear-gradient(135deg, rgba(42, 22, 10, 0.62) 0%, rgba(26, 13, 6, 0.46) 100%);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(253, 224, 71, 0.55);
+      box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.50), 0 0 32px rgba(245, 158, 11, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      border-radius: 1.5rem;
+      padding: 1.35rem 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .hero-caption-card {
+        border-radius: 2rem;
+        padding: 2.25rem 3rem;
+      }
+    }
+
+    /* Thẻ Menu Tông Kem Sữa Đặc Vàng Nắng & Cam Hổ Phách Rực Rỡ (Sáng tươi, nổi bật hẳn trên nền cà phê, không bị chìm) */
+    .espresso-menu-card {
+      background: linear-gradient(145deg, rgba(255, 252, 242, 0.97) 0%, rgba(254, 243, 199, 0.94) 100%);
+      border: 1.5px solid rgba(245, 158, 11, 0.65);
+      box-shadow: 0 14px 32px -6px rgba(180, 83, 9, 0.28), 0 4px 12px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+    .espresso-menu-card:hover {
+      background: linear-gradient(145deg, #FFFFFF 0%, #FFFBEB 100%);
+      border-color: #F59E0B;
+      box-shadow: 0 18px 40px -6px rgba(245, 158, 11, 0.42), 0 8px 20px -4px rgba(0, 0, 0, 0.28);
+      transform: translateY(-3px);
+    }
+    
+    /* Pinned Hero Stage (Desktop / PC) */
+    .hero-pinned-container {
+      position: relative;
+      height: 300vh;
+    }
+    .hero-sticky-stage {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero-media-wrapper {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .video-ready .hero-video {
+      opacity: 1;
+    }
+
+    /* Lớp phủ nhẹ bên trái giúp nổi bật chữ, giữ hoàn toàn trong suốt 100% ở vùng phin và 3 dòng cà phê */
+    .hero-sun-scrim {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(
+          to right,
+          rgba(18, 10, 6, 0.56) 0%,
+          rgba(18, 10, 6, 0.24) 28%,
+          rgba(18, 10, 6, 0.0) 45%,
+          rgba(18, 10, 6, 0.0) 100%
+        );
+      pointer-events: none;
+    }
+
+    .caption-band {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1rem 0.75rem;
+      pointer-events: none;
+      opacity: 0;
+      will-change: opacity, transform, filter;
+    }
+    @media (min-width: 640px) {
+      .caption-band {
+        padding: 2rem 2rem 2rem 2.5rem;
+      }
+    }
+    .caption-band.interactive {
+      pointer-events: auto;
+    }
+
+    /* Chế độ giảm chuyển động (Accessibility) */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-pinned-container {
+        height: auto !important;
+      }
+      .hero-sticky-stage {
+        position: relative !important;
+        height: auto !important;
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+      }
+      .hero-video, .ring-wrapper {
+        display: none !important;
+      }
+      .caption-band {
+        display: none !important;
+      }
+      .mobile-static-hero {
+        display: block !important;
+      }
+    }
+    .mobile-static-hero {
+      display: none;
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      padding: 3.5rem 1.25rem;
+    }
+
+    .ring-wrapper {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(28, 16, 11, 0.82);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 0.95rem;
+      border-radius: 9999px;
+      color: #FEF3C7;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+    }
+  </style>
+</head>
+<body class="selection:bg-amber-500 selection:text-white morning-sunbeam-bg min-h-screen flex flex-col">
+
+  <!-- ========================================================================= -->
+  <!-- TOP BANNER ÁNH NẮNG MAI & BỘ CHUYỂN 3 NGÔN NGỮ (VI, EN, CN) -->
+  <!-- ========================================================================= -->
+  <header class="bg-gradient-to-r from-sun-dark via-[#26150E] to-sun-dark text-white sticky top-0 z-50 border-b border-amber-900/50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Logo Thương Hiệu Với Điểm Nhấn Tia Nắng Vàng -->
+      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 flex items-center justify-center font-black text-sun-dark shadow-lg shadow-amber-500/25 group-hover:scale-105 transition-transform">
+          <i data-lucide="sun" class="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.4] text-sun-dark animate-spin-slow"></i>
+        </div>
+        <div>
+          <span class="font-drypt text-xl sm:text-2xl text-white block leading-none">
+            AURORA <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-200">Coffee</span>
+          </span>
+          <span id="nav-sub-brand" class="text-[9px] sm:text-[10px] uppercase tracking-widest text-amber-200/80 font-bold block mt-0.5">
+            Mẫu Web Đặt Món & Giao Hàng
+          </span>
+        </div>
+      </a>
+
+      <!-- Menu Máy Tính -->
+      <nav class="hidden md:flex items-center gap-5 lg:gap-6 text-xs sm:text-sm font-semibold text-stone-200">
+        <a href="#menu" onclick="scrollToMenuSection(event)" id="nav-menu-link" class="hover:text-amber-300 transition-colors text-center leading-tight">
+          <span class="block whitespace-nowrap font-bold">Thực Đơn</span>
+          <span class="block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5">(14 Món)</span>
+        </a>
+        <a href="#location-delivery" id="nav-loc-link" class="hover:text-amber-300 transition-colors text-center leading-tight">
+          <span class="block whitespace-nowrap font-bold">Vị Trí & Giao Hàng</span>
+          <span class="block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5">(2km)</span>
+        </a>
+        <button onclick="openMenuModal()" id="nav-orig-link" class="flex items-center gap-1.5 text-amber-300 hover:text-yellow-200 whitespace-nowrap">
+          <i data-lucide="layout-list" class="w-4 h-4 shrink-0"></i>
+          <span id="nav-orig-text">Bảng Giá Mẫu</span>
+        </button>
+      </nav>
+
+      <!-- Nút Chọn 3 Ngôn Ngữ, Hotline & Giỏ Hàng -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Bộ Chuyển 3 Ngôn Ngữ: Vietnam, English, China -->
+        <div class="flex items-center bg-black/40 border border-amber-500/30 rounded-full p-1 text-[11px] font-bold">
+          <button onclick="setLanguage('vi')" id="lang-btn-vi" class="lang-pill px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-sun-dark font-black transition-all">
+            🇻🇳 VN
+          </button>
+          <button onclick="setLanguage('en')" id="lang-btn-en" class="lang-pill px-2.5 py-1 rounded-full text-stone-300 hover:text-white transition-all">
+            🇬🇧 EN
+          </button>
+          <button onclick="setLanguage('zh')" id="lang-btn-zh" class="lang-pill px-2.5 py-1 rounded-full text-stone-300 hover:text-white transition-all">
+            🇨🇳 中文
+          </button>
+        </div>
+
+        <!-- Nút Mở Trên Điện Thoại (QR Code) -->
+        <button onclick="openQrPhoneModal()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/20 hover:bg-emerald-500/35 text-emerald-200 text-xs font-bold border border-emerald-400/40 transition-all" title="Quét QR mở trên điện thoại">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5 text-emerald-300"></i>
+          <span>Mở trên ĐT</span>
+        </button>
+
+        <!-- Fanpage & Hotline Mẫu Demo -->
+        <button type="button" onclick="openDemoFacebook()" class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600/25 hover:bg-blue-600/40 text-blue-200 text-xs font-bold border border-blue-400/40 transition-all" title="Fanpage Demo">
+          <i data-lucide="facebook" class="w-3.5 h-3.5 text-blue-300"></i>
+          <span>Fanpage</span>
+        </button>
+
+        <a href="tel:0900123456" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 text-xs font-bold border border-amber-400/30 transition-all">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5 text-yellow-300"></i>
+          <span class="font-black text-yellow-200">0900 123 456</span>
+        </a>
+
+        <!-- Nút Giỏ Hàng -->
+        <button onclick="openCart()" class="relative bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-sun-dark px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-black flex items-center gap-1.5 transition-all shadow-md shadow-amber-500/20">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span id="nav-cart-text" class="hidden sm:inline">Giỏ</span>
+          <span id="cart-badge-count" class="bg-sun-dark text-yellow-300 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black">0</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Thanh Điều Hướng Dành Riêng Cho Điện Thoại (Mobile Navigation Bar) -->
+    <div class="md:hidden border-t border-amber-900/60 bg-black/35 px-3 py-2 flex items-center justify-around text-[11px] font-semibold text-stone-200">
+      <a href="#menu" onclick="scrollToMenuSection(event)" id="mob-nav-menu-link" class="hover:text-amber-300 transition-colors text-center leading-tight">
+        <span class="block whitespace-nowrap font-bold">Thực Đơn</span>
+        <span class="block text-[9px] text-amber-300 font-bold whitespace-nowrap mt-0.5">(14 Món)</span>
+      </a>
+      <span class="h-5 w-px bg-amber-800/60"></span>
+      <a href="#location-delivery" id="mob-nav-loc-link" class="hover:text-amber-300 transition-colors text-center leading-tight">
+        <span class="block whitespace-nowrap font-bold">Vị Trí & Ship</span>
+        <span class="block text-[9px] text-amber-300 font-bold whitespace-nowrap mt-0.5">(2km)</span>
+      </a>
+      <span class="h-5 w-px bg-amber-800/60"></span>
+      <button onclick="openMenuModal()" class="flex flex-col items-center leading-tight text-amber-300 hover:text-yellow-200 whitespace-nowrap">
+        <span class="font-bold">Bảng Giá</span>
+        <span class="text-[9px] text-amber-200/80 mt-0.5">Mẫu Demo</span>
+      </button>
+      <span class="h-5 w-px bg-amber-800/60"></span>
+      <button type="button" onclick="openDemoFacebook()" class="flex flex-col items-center leading-tight text-blue-300 hover:text-blue-200 whitespace-nowrap">
+        <span class="font-bold">Fanpage</span>
+        <span class="text-[9px] text-blue-200/80 mt-0.5">Nhắn quán</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- HERO SECTION: ÁNH NẮNG MAI CHIẾU RỌI & DÒNG CHẢY PHIN ĐIỆN ẢNH -->
+  <!-- ========================================================================= -->
+  <section class="hero-pinned-container" id="hero-experience">
+    <div class="hero-sticky-stage" id="stage">
+      
+      <!-- Nền & Video Scrub với vệt nắng vàng mai -->
+      <div class="hero-media-wrapper" id="hero-media-wrapper" style="background-image: url('assets/hero-poster.jpg?v=6s-luxury');">
+        <video id="hero-video" class="hero-video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+        <canvas id="hero-drip-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+        <div class="hero-sun-scrim"></div>
+      </div>
+
+      <!-- Vòng tròn tiến độ tải video nhẹ trên PC -->
+      <div class="ring-wrapper" id="video-progress-ring">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" stroke-width="2.5" class="opacity-30"/>
+          <circle id="ring-circle" cx="12" cy="12" r="10" stroke-width="2.5" stroke-dasharray="63" stroke-dashoffset="63" class="text-yellow-400 transition-all duration-150"/>
+        </svg>
+        <span id="ring-text">Trải nghiệm cuộn phim</span>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- CÁC BẢNG NỘI DUNG CUỘN TRÊN MÁY TÍNH (PC CAPTION BANDS) -->
+      <!-- =================================================================== -->
+      <div class="max-w-7xl mx-auto w-full h-full relative z-20">
+        
+        <!-- Band 1: Nắng sớm rọi phin -->
+        <div class="caption-band interactive" id="band-1">
+          <div class="text-white hero-caption-card">
+            <span id="b1-tag" class="text-xs font-bold uppercase tracking-widest text-yellow-300 bg-amber-500/25 px-3.5 py-1 rounded-full border border-yellow-300/50 inline-block">
+              NẮNG MAI VÀ CÀ PHÊ PHIN
+            </span>
+            <h1 id="b1-title" class="font-drypt text-[26px] sm:text-[56px] text-white uppercase mt-3 sm:mt-4 mb-2.5 sm:mb-3 leading-tight drop-shadow-md whitespace-nowrap">
+              Ánh nắng ban mai<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400">chạm từng giọt phin.</span>
+            </h1>
+            <p id="b1-desc" class="text-sm sm:text-base text-amber-50 max-w-2xl leading-relaxed font-medium">
+              Tia nắng vàng ấm áp chiếu qua khung cửa. Từng giọt cà phê phin nguyên chất rơi chậm rãi, hòa quyện hương thơm mộc mạc đánh thức trọn vẹn ngày mới.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              <a href="#menu" onclick="scrollToMenuSection(event)" class="px-6 py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-sun-dark font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-amber-500/40 flex items-center gap-2 transition-all hover:scale-105 cursor-pointer">
+                <i data-lucide="utensils" class="w-4 h-4"></i>
+                <span id="b1-btn-menu">Xem Menu & Gọi Món</span>
+              </a>
+              <span id="b1-scroll-cue" class="text-xs text-yellow-300 font-bold flex items-center gap-1.5">
+                <i data-lucide="arrow-down" class="w-4 h-4 animate-bounce"></i> Cuộn xuống để xem tiếp hành trình
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Band 2: Hòa quyện sữa vàng mật -->
+        <div class="caption-band" id="band-2">
+          <div class="text-white hero-caption-card">
+            <span id="b2-tag" class="text-xs font-bold uppercase tracking-widest text-yellow-300 bg-amber-500/25 px-3.5 py-1 rounded-full border border-yellow-300/50 inline-block">
+              SÓNG SÁNH VÀNG ÓNG
+            </span>
+            <h2 id="b2-title" class="font-drypt text-[26px] sm:text-[56px] text-white uppercase mt-3 sm:mt-4 mb-2.5 sm:mb-3 leading-tight drop-shadow-md whitespace-nowrap">
+              Hòa quyện sữa đặc<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400">ấm áp ngọt bùi.</span>
+            </h2>
+            <p id="b2-desc" class="text-sm sm:text-base text-amber-50 max-w-2xl leading-relaxed font-medium">
+              Dưới ánh sáng ban mai dịu dàng, giọt cà phê đen nhánh hòa cùng lớp sữa đặc sánh béo, cuộn tròn thành những vệt hoa văn cẩm thạch tuyệt đẹp.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              <a href="#menu" onclick="scrollToMenuSection(event)" class="px-6 py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-sun-dark font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-amber-500/40 flex items-center gap-2 transition-all hover:scale-105 cursor-pointer">
+                <i data-lucide="utensils" class="w-4 h-4"></i>
+                <span id="b2-btn-menu">Xem Menu & Gọi Món</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Band 3: Ly cà phê nắng sớm hoàn chỉnh -->
+        <div class="caption-band" id="band-3">
+          <div class="text-white hero-caption-card">
+            <span id="b3-tag" class="text-xs font-bold uppercase tracking-widest text-yellow-300 bg-amber-500/25 px-3.5 py-1 rounded-full border border-yellow-300/50 inline-block">
+              KHỞI ĐẦU NGÀY MỚI TRỌN VẸN
+            </span>
+            <h2 id="b3-title" class="font-drypt text-[26px] sm:text-[56px] text-white uppercase mt-3 sm:mt-4 mb-2.5 sm:mb-3 leading-tight drop-shadow-md whitespace-nowrap">
+              Năng lượng nắng ấm<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400">sẵn sàng trao tay.</span>
+            </h2>
+            <p id="b3-desc" class="text-sm sm:text-base text-amber-50 max-w-2xl leading-relaxed font-medium mb-6">
+              Ly cà phê nâu đậm đà, kem muối sánh mịn hay trà trái cây tươi mát đã sẵn sàng. Giao hàng tận nơi hỏa tốc trong ánh nắng mai thơm lừng.
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="#menu" onclick="scrollToMenuSection(event)" id="b3-btn-menu" class="px-6 py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 hover:from-amber-500 hover:to-orange-500 text-sun-dark font-black text-xs uppercase tracking-wider rounded-full shadow-lg shadow-amber-500/40 transition-all cursor-pointer">
+                Xem Menu & Gọi Món
+              </a>
+              <a href="tel:0900123456" class="px-5 py-3 bg-amber-500/20 hover:bg-amber-500/35 text-yellow-200 font-bold text-xs uppercase tracking-wider rounded-full border border-yellow-300/50 transition-all">
+                Hotline 0900 123 456
+              </a>
+              <button type="button" onclick="openDemoFacebook()" class="px-5 py-3 bg-blue-600/30 hover:bg-blue-600/50 text-blue-100 font-bold text-xs uppercase tracking-wider rounded-full border border-blue-400/50 transition-all flex items-center gap-1.5">
+                <i data-lucide="facebook" class="w-3.5 h-3.5"></i>
+                <span>Fanpage Demo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- GIAO DIỆN HERO DÀNH CHO PHONE (MOBILE STATIC HERO) -->
+      <!-- =================================================================== -->
+      <div class="mobile-static-hero">
+        <div class="max-w-md mx-auto text-center sm:text-left text-white">
+          
+          <div class="inline-flex items-center gap-2 bg-black/50 border border-amber-400/50 px-3.5 py-1 rounded-full text-xs font-bold text-yellow-300 mb-4 backdrop-blur-sm">
+            <span id="mob-delivery-tag">🛵 Nắng Mai Giao Tận Nơi: 0900 123 456</span>
+          </div>
+
+          <h1 class="font-drypt text-4xl text-white uppercase leading-tight mb-3">
+            AURORA <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">Coffee</span><br>
+            <span id="mob-hero-sub">ÁNH NẮNG MAI & CÀ PHÊ PHIN</span>
+          </h1>
+
+          <p id="mob-hero-desc" class="text-xs text-amber-50/90 font-medium leading-relaxed mb-6">
+            Pha phin mộc mạc đón ánh nắng sớm chan hòa. Hương vị cà phê nguyên chất cùng thực đơn 14 món trà trái cây tươi mát phục vụ mỗi ngày.
+          </p>
+
+          <div class="flex flex-col gap-2.5">
+            <a href="#menu" id="mob-btn-menu" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-sun-dark text-xs font-black uppercase rounded-2xl text-center shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2">
+              <i data-lucide="utensils" class="w-4 h-4 text-sun-dark"></i>
+              <span id="mob-btn-menu-text">Xem Thực Đơn 14 Món (Từ 15K)</span>
+            </a>
+
+            <div class="grid grid-cols-2 gap-2">
+              <a href="tel:0900123456" class="py-3 bg-white/20 text-yellow-200 text-xs font-bold rounded-xl text-center border border-yellow-400/30 flex items-center justify-center gap-1.5">
+                <i data-lucide="phone-call" class="w-3.5 h-3.5 text-yellow-300"></i>
+                <span id="mob-btn-call">Gọi Đặt Ngay</span>
+              </a>
+              <button onclick="orderViaZalo()" class="py-3 bg-blue-600 text-white text-xs font-bold rounded-xl text-center flex items-center justify-center gap-1.5 shadow-md">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                <span id="mob-btn-zalo">Đặt Qua Zalo</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 mt-6 pt-4 border-t border-white/20 text-center">
+            <div>
+              <span id="mob-stat-1" class="block text-yellow-300 font-black text-xs">Từ 15K</span>
+              <span id="mob-stat-1-sub" class="text-[10px] text-stone-300">Giá bình dân</span>
+            </div>
+            <div>
+              <span id="mob-stat-2" class="block text-white font-black text-xs">100% Phin</span>
+              <span id="mob-stat-2-sub" class="text-[10px] text-stone-300">Nguyên chất</span>
+            </div>
+            <div>
+              <span id="mob-stat-3" class="block text-emerald-300 font-black text-xs">Giao Nhanh</span>
+              <span id="mob-stat-3-sub" class="text-[10px] text-stone-300">Bảo quản lạnh</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- TOÀN BỘ 14 MÓN THỰC ĐƠN MẪU DEMO (AURORA COFFEE) -->
+  <!-- ========================================================================= -->
+  <section id="menu" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+    
+    <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 sm:mb-12 gap-4 espresso-menu-card p-5 sm:p-7 rounded-3xl">
+      <div>
+        <span id="menu-tag" class="text-[11px] font-black uppercase tracking-widest px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm inline-flex items-center gap-1.5">
+          <i data-lucide="sparkle" class="w-3.5 h-3.5 text-yellow-200"></i> THỰC ĐƠN MẪU TRỰC QUAN
+        </span>
+        <h2 id="menu-title" class="font-drypt text-3xl sm:text-5xl text-sun-dark uppercase mt-2">
+          MENU AURORA COFFEE (DEMO)
+        </h2>
+        <p id="menu-desc" class="text-xs sm:text-sm text-stone-700 font-medium mt-1">
+          Giao diện đặt món thông minh. Nhấp vào bất kỳ món nào để chọn lượng đá, độ ngọt và thêm vào đơn.
+        </p>
+      </div>
+
+      <!-- Bộ lọc danh mục trên PC & điện thoại -->
+      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+        <button onclick="filterMenu('all')" id="btn-cat-all" class="cat-btn active px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-gradient-to-r from-orange-600 to-amber-500 text-white transition-all shadow-md shadow-amber-500/25">
+          Tất cả (14)
+        </button>
+        <button onclick="filterMenu('coffee')" id="btn-cat-coffee" class="cat-btn px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-white text-stone-800 hover:bg-amber-50 border border-amber-400/60 transition-all shadow-sm">
+          ☕ Cà Phê (4)
+        </button>
+        <button onclick="filterMenu('non-coffee')" id="btn-cat-non-coffee" class="cat-btn px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-white text-stone-800 hover:bg-amber-50 border border-amber-400/60 transition-all shadow-sm">
+          🍵 Non-Coffee (2)
+        </button>
+        <button onclick="filterMenu('juice')" id="btn-cat-juice" class="cat-btn px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-white text-stone-800 hover:bg-amber-50 border border-amber-400/60 transition-all shadow-sm">
+          🍊 Nước Ép (3)
+        </button>
+        <button onclick="filterMenu('tea')" id="btn-cat-tea" class="cat-btn px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-bold bg-white text-stone-800 hover:bg-amber-50 border border-amber-400/60 transition-all shadow-sm">
+          🍹 Trà Trái Cây (5)
+        </button>
+      </div>
+    </div>
+
+    <!-- Lưới 14 Món Thực Đơn -->
+    <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <!-- Đổ tự động bằng JavaScript -->
+    </div>
+
+    <!-- Nút Mở Modal Xem Bảng Giá Tổng Hợp -->
+    <div class="mt-10 text-center">
+      <button onclick="openMenuModal()" class="inline-flex items-center gap-2 px-6 py-3 espresso-menu-card text-sun-dark hover:text-orange-700 rounded-full text-xs font-extrabold shadow-lg transition-all">
+        <i data-lucide="layout-list" class="w-4 h-4 text-orange-600"></i>
+        <span id="btn-orig-image-text">Xem Bảng Giá Tổng Hợp (Mẫu Demo)</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- VỊ TRÍ QUÁN MẪU & PHẠM VI GIAO HÀNG BÁN KÍNH 2KM (DRYPT BENTO STYLE) -->
+  <!-- ========================================================================= -->
+  <div class="morning-sunbeam-bg border-t border-amber-200/80 relative z-20">
+
+  <!-- THANH NHANH: CAM KẾT ÁNH NẮNG MAI & GIỜ PHỤC VỤ (ĐÃ CHUYỂN XUỐNG DƯỚI MENU) -->
+  <section class="py-6 bg-white/90 backdrop-blur-sm border-b border-amber-200/60 relative z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 text-center sm:text-left">
+        <div class="flex items-center justify-center sm:justify-start gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-amber-100/80 text-amber-700 flex items-center justify-center font-bold border border-amber-300/40 shadow-sm">
+            <i data-lucide="sun" class="w-5 h-5 text-amber-600"></i>
+          </div>
+          <div>
+            <h4 id="qb-t1" class="text-xs font-black text-sun-dark">Nắng Sớm Mở Cửa</h4>
+            <p id="qb-d1" class="text-[11px] text-stone-600">06:00 - 22:00 tất cả các ngày trong tuần</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center sm:justify-start gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-yellow-100/80 text-yellow-800 flex items-center justify-center font-bold border border-yellow-300/40 shadow-sm">
+            <i data-lucide="bike" class="w-5 h-5 text-amber-700"></i>
+          </div>
+          <div>
+            <h4 id="qb-t2" class="text-xs font-black text-sun-dark">Giao Hàng Tận Nơi (2km)</h4>
+            <p id="qb-d2" class="text-[11px] text-stone-600">Hotline Demo: <strong class="text-amber-700 font-bold">0900 123 456</strong></p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center sm:justify-start gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-100/80 text-emerald-800 flex items-center justify-center font-bold border border-emerald-300/40 shadow-sm">
+            <i data-lucide="sparkles" class="w-5 h-5 text-emerald-700"></i>
+          </div>
+          <div>
+            <h4 id="qb-t3" class="text-xs font-black text-sun-dark">Cam Kết Tươi Mới</h4>
+            <p id="qb-d3" class="text-[11px] text-stone-600">Hạt sạch nguyên chất, trái cây tươi ép mỗi ngày</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="location-delivery" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+    <div class="mb-8 sm:mb-10 text-center sm:text-left">
+      <span id="loc-tag" class="text-[11px] font-black uppercase tracking-widest px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300/60 shadow-sm inline-flex items-center gap-1.5">
+        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-600"></i> VỊ TRÍ QUÁN MẪU & KHU VỰC GIAO HÀNG
+      </span>
+      <h2 id="loc-title" class="font-drypt text-3xl sm:text-5xl text-sun-dark uppercase mt-2">
+        123 ĐƯỜNG TRUNG TÂM • BÁN KÍNH GIAO HÀNG 2KM
+      </h2>
+      <p id="loc-desc" class="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl">
+        Thưởng thức hương vị cà phê phin mộc mạc và trà tươi tại quán hoặc nhận hàng tận tay trong bán kính 2km quanh vị trí quán (Thanh toán chuyển khoản QR tiện lợi).
+      </p>
+    </div>
+
+    <!-- Bento Grid theo phong cách DRYPT -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+      
+      <!-- Bento Card 1: Thông tin quán mẫu (5 cols) -->
+      <div class="lg:col-span-5 bg-sun-dark text-white rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-amber-900/60 shadow-xl relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/15 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="loc-badge-open">Đang Mở Cửa (06:00 - 22:00)</span>
+            </span>
+            <span class="text-[10px] text-amber-300 font-bold uppercase tracking-widest bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-400/20">
+              BẢN DEMO
+            </span>
+          </div>
+
+          <h3 class="font-drypt text-2xl sm:text-3xl text-white tracking-tight leading-tight">
+            AURORA Coffee
+          </h3>
+          <p id="loc-tagline-text" class="text-xs text-amber-200/80 font-medium mt-1">
+            Mẫu Website Đặt Món & Giao Hàng Quán Cà Phê
+          </p>
+
+          <div class="mt-6 space-y-4 text-xs">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-yellow-300 flex items-center justify-center shrink-0 border border-amber-400/30">
+                <i data-lucide="map-pin" class="w-4 h-4 text-yellow-300"></i>
+              </div>
+              <div>
+                <span id="loc-lbl-addr" class="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">Vị Trí Quán (Mẫu Demo)</span>
+                <p id="loc-val-addr" class="font-bold text-white text-sm mt-0.5 leading-snug">
+                  Số 123 Đường Trung Tâm, Khu Phố 1, Quận Trung Tâm
+                </p>
+                <p class="text-[11px] text-stone-400 mt-0.5">Tùy chỉnh tọa độ GPS theo địa chỉ thực tế của từng quán</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-yellow-300 flex items-center justify-center shrink-0 border border-amber-400/30">
+                <i data-lucide="navigation" class="w-4 h-4 text-yellow-300"></i>
+              </div>
+              <div>
+                <span id="loc-lbl-rad" class="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">Phạm Vi & Thanh Toán Giao Hàng</span>
+                <p id="loc-val-rad" class="font-bold text-amber-300 text-sm mt-0.5">
+                  Ship bán kính 2km quanh quán • Chỉ nhận Chuyển khoản
+                </p>
+                <p id="loc-val-rad-sub" class="text-[11px] text-stone-300 mt-0.5">
+                  Phục vụ nhanh Khu Phố 1, Khu Văn Phòng, Khu Dân Cư Trung Tâm, Tòa Nhà Thương Mại, Trường Học...
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-yellow-300 flex items-center justify-center shrink-0 border border-amber-400/30">
+                <i data-lucide="phone-call" class="w-4 h-4 text-yellow-300"></i>
+              </div>
+              <div>
+                <span id="loc-lbl-hotline" class="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">Hotline & Fanpage Mẫu Demo</span>
+                <div class="flex flex-wrap items-center gap-3 mt-0.5">
+                  <a href="tel:0900123456" class="font-black text-yellow-200 text-base hover:underline">
+                    0900 123 456
+                  </a>
+                  <button type="button" onclick="openDemoFacebook()" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-blue-600/30 hover:bg-blue-600/50 text-blue-200 border border-blue-400/40 text-[11px] font-bold">
+                    <i data-lucide="facebook" class="w-3 h-3"></i> Fanpage Quán
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-amber-900/50 flex flex-wrap gap-2.5">
+          <a href="https://www.google.com/maps?q=Hoan+Kiem+Ha+Noi" target="_blank" rel="noopener noreferrer" class="flex-1 py-3 px-4 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-sun-dark font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-2">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span id="loc-btn-map">Google Maps</span>
+          </a>
+          <button type="button" onclick="openDemoFacebook()" class="py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="facebook" class="w-4 h-4"></i>
+            <span>Fanpage</span>
+          </button>
+          <a href="tel:0900123456" class="py-3 px-4 bg-white/10 hover:bg-white/20 text-yellow-200 font-bold text-xs uppercase tracking-wider rounded-xl border border-yellow-300/30 transition-all flex items-center justify-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4"></i>
+            <span id="loc-btn-call">Gọi Quán</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Bento Card 2: Bản đồ tương tác Google Maps (7 cols) -->
+      <div class="lg:col-span-7 sunlit-card rounded-3xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden relative min-h-[380px] sm:min-h-[440px]">
+        
+        <div class="flex items-center justify-between mb-3 px-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+            <span class="text-xs font-black text-sun-dark uppercase tracking-wider" id="loc-map-header">
+              Bản Đồ Vị Trí & Tâm Giao Hàng 2km (Minh Họa)
+            </span>
+          </div>
+          <a href="https://www.google.com/maps?q=Hoan+Kiem+Ha+Noi" target="_blank" rel="noopener noreferrer" class="text-[11px] font-bold text-amber-700 hover:text-amber-900 flex items-center gap-1">
+            <span id="loc-map-full-link">Xem bản đồ đầy đủ</span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+        <!-- Khung iframe Google Maps trực quan -->
+        <div class="flex-1 rounded-2xl overflow-hidden border border-amber-200/80 relative shadow-inner bg-amber-50">
+          <iframe 
+            title="Bản Đồ Vị Trí Quán Mẫu AURORA Coffee"
+            src="https://maps.google.com/maps?q=Hoan+Kiem+Ha+Noi&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            class="w-full h-full min-h-[300px] border-0"
+            loading="lazy"
+            allowfullscreen>
+          </iframe>
+
+          <!-- Huy hiệu tâm giao hàng nổi trên bản đồ -->
+          <div class="absolute bottom-3 left-3 right-3 sm:right-auto bg-sun-dark/95 backdrop-blur-md text-white p-3 rounded-2xl border border-amber-400/40 shadow-xl flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-amber-500 text-sun-dark flex items-center justify-center font-black shrink-0">
+              <i data-lucide="radar" class="w-5 h-5 text-sun-dark"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-black text-amber-300" id="loc-badge-pin-title">Tâm Giao Hàng Mẫu: 123 Đường Trung Tâm</p>
+              <p class="text-[10px] text-stone-300" id="loc-badge-pin-sub">Giao nhanh bán kính 2km • Chỉ nhận Chuyển khoản • 0900 123 456</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 3 Điểm Cam Kết Giao Hàng 2km -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mt-6">
+      
+      <div class="sunlit-card rounded-2xl p-5 border border-amber-200/70">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3">
+          <i data-lucide="bike" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-drypt text-base text-sun-dark" id="loc-feat1-title">Ship Nhanh Bán Kính 2km</h4>
+        <p class="text-xs text-stone-600 mt-1" id="loc-feat1-desc">
+          Giao nhanh quanh vị trí quán trong bán kính 2km, tự động định vị khoảng cách GPS và thanh toán chuyển khoản tiện lợi.
+        </p>
+      </div>
+
+      <div class="sunlit-card rounded-2xl p-5 border border-amber-200/70">
+        <div class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-800 flex items-center justify-center mb-3">
+          <i data-lucide="snowflake" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-drypt text-base text-sun-dark" id="loc-feat2-title">Bảo Quản Đá & Nhiệt Độ Chu Đáo</h4>
+        <p class="text-xs text-stone-600 mt-1" id="loc-feat2-desc">
+          Đá riêng theo ý muốn, cốc nắp kín giữ lạnh giữ nóng chuyên dụng, đồ uống đến tay vẫn vẹn nguyên vị tươi.
+        </p>
+      </div>
+
+      <div class="sunlit-card rounded-2xl p-5 border border-amber-200/70">
+        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-3">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-drypt text-base text-sun-dark" id="loc-feat3-title">Đặt Món Trực Tiếp Siêu Nhanh</h4>
+        <p class="text-xs text-stone-600 mt-1" id="loc-feat3-desc">
+          Bấm chọn ly trên web tạo phiếu đơn gửi Zalo/Fanpage hoặc gọi Hotline 0900 123 456, quán nhận đơn và pha ngay tức thì.
+        </p>
+      </div>
+
+    </div>
+  </section>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL TÙY CHỈNH LƯỢNG ĐÁ, ĐƯỜNG VÀ GHI CHÚ -->
+  <!-- ========================================================================= -->
+  <div id="customize-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white border border-amber-200 max-w-md w-full rounded-3xl p-6 relative shadow-2xl animate-in fade-in duration-150">
+      
+      <button onclick="closeCustomizeModal()" class="absolute top-5 right-5 text-stone-400 hover:text-stone-700 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-4">
+        <span id="cust-group" class="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200">
+          COFFEE
+        </span>
+        <h3 id="cust-title" class="font-drypt text-2xl text-sun-dark mt-2">Cafe kem muối</h3>
+        <p id="cust-sub" class="text-xs text-stone-500 italic mt-0.5">Salted Cream Coffee | 咸奶油咖啡</p>
+        <p id="cust-price" class="font-heading font-black text-xl text-amber-600 mt-2">20.000₫</p>
+      </div>
+
+      <div class="space-y-4 border-y border-amber-100 py-4 my-4 text-xs">
+        <div>
+          <label id="lbl-ice" class="block font-bold text-stone-800 uppercase text-[11px] mb-2">Lượng Đá</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="setOpt('ice', '100%')" id="opt-ice-100" class="opt-ice active py-2 rounded-xl border border-amber-500 bg-amber-500 text-sun-dark font-black">100% Đá</button>
+            <button type="button" onclick="setOpt('ice', '70%')" id="opt-ice-70" class="opt-ice py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400">70% Đá</button>
+            <button type="button" onclick="setOpt('ice', '50%')" id="opt-ice-50" class="opt-ice py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400">50% Đá</button>
+            <button type="button" onclick="setOpt('ice', 'no_ice')" id="opt-ice-none" class="opt-ice py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400">Không đá</button>
+          </div>
+        </div>
+
+        <div>
+          <label id="lbl-sugar" class="block font-bold text-stone-800 uppercase text-[11px] mb-2">Độ Ngọt / Đường</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="setOpt('sugar', 'standard')" id="opt-sug-std" class="opt-sugar active py-2 rounded-xl border border-amber-500 bg-amber-500 text-sun-dark font-black">Chuẩn vị</button>
+            <button type="button" onclick="setOpt('sugar', '70%')" id="opt-sug-70" class="opt-sugar py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400">70% ngọt</button>
+            <button type="button" onclick="setOpt('sugar', '50%')" id="opt-sug-50" class="opt-sugar py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400">Ít ngọt</button>
+            <button type="button" onclick="setOpt('sugar', 'none')" id="opt-sug-none" class="opt-sugar py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400">0% đường</button>
+          </div>
+        </div>
+
+        <div>
+          <label id="lbl-note" class="block font-bold text-stone-800 uppercase text-[11px] mb-1">Ghi chú riêng cho quán</label>
+          <input type="text" id="cust-note" placeholder="Vd: Cho đá riêng, nhiều sữa hơn..." class="w-full bg-amber-50/50 border border-amber-200 rounded-xl px-3 py-2 text-stone-800 text-xs focus:outline-none focus:border-amber-500">
+        </div>
+      </div>
+
+      <button onclick="confirmAddToCart()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-sun-dark font-black text-xs uppercase tracking-wider rounded-2xl transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-2">
+        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+        <span id="cust-btn-label">Thêm Vào Đơn: 20.000₫</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- GIỎ HÀNG TRƯỢT & BẢN ĐỒ VỊ TRÍ QUÁN MẪU (CART & LIVE MAP VIEW) -->
+  <!-- ========================================================================= -->
+  <div id="cart-drawer-overlay" class="fixed inset-0 z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col sm:flex-row">
+    
+    <!-- VÙNG BẢN ĐỒ HIỆN VỊ TRÍ QUÁN MẪU (TRÊN MOBILE NẰM PHÍA TRÊN, TRÊN PC NẰM BÊN TRÁI) -->
+    <div id="cart-map-panel" class="flex h-[34vh] sm:h-full sm:flex-1 min-w-[52%] lg:min-w-[60%] relative bg-stone-900 overflow-hidden flex-col transition-all duration-300 shrink-0">
+      <iframe 
+        id="cart-map-iframe"
+        title="Bản Đồ Vị Trí Quán Mẫu AURORA Coffee"
+        src="https://maps.google.com/maps?q=Hoan+Kiem+Ha+Noi&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        class="w-full h-full border-0 absolute inset-0"
+        loading="lazy"
+        allowfullscreen>
+      </iframe>
+
+      <!-- Nút phóng rộng / thu gọn vùng bản đồ nhanh -->
+      <button type="button" onclick="toggleWideCartMap()" id="btn-expand-cart-map" class="absolute top-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-sun-dark/90 hover:bg-sun-dark text-amber-300 border border-amber-400/50 shadow-lg text-[11px] font-black flex items-center gap-1.5 transition-all cursor-pointer">
+        <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+        <span id="lbl-expand-cart-map">Mở rộng bản đồ</span>
+      </button>
+    </div>
+
+    <!-- KHUNG GIỎ HÀNG & FORM XỬ LÝ ĐƠN (DƯỚI TRÊN MOBILE, PHẢI TRÊN PC) -->
+    <div id="cart-drawer" class="w-full flex-1 sm:flex-initial sm:w-[370px] md:w-[390px] lg:w-[420px] shrink-0 bg-sun-canvas border-t sm:border-t-0 sm:border-l border-amber-200 sm:h-full flex flex-col shadow-2xl relative z-20 transform translate-x-full transition-transform duration-300 overflow-hidden">
+      
+      <div class="p-4 sm:p-5 border-b border-amber-200 flex items-center justify-between bg-white shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+            <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-600"></i>
+          </div>
+          <div>
+            <h3 id="drawer-title" class="font-drypt text-2xl text-sun-dark uppercase">Giỏ Hàng AURORA</h3>
+            <span id="cart-items-count-text" class="text-[11px] text-stone-500">0 món đã chọn</span>
+          </div>
+        </div>
+        <button onclick="closeCart()" class="text-stone-400 hover:text-stone-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Thẻ thông báo vị trí & giao hàng trên mobile -->
+      <div class="px-4 py-2 bg-amber-100/70 border-b border-amber-200 flex items-center justify-between text-xs md:hidden shrink-0">
+        <span class="text-amber-900 font-bold text-[11px]">📍 123 Đường Trung Tâm • Ship 2km • Chuyển khoản</span>
+        <a href="https://www.google.com/maps?q=Hoan+Kiem+Ha+Noi" target="_blank" rel="noopener noreferrer" class="text-amber-700 hover:underline font-bold text-[11px]">Bản đồ</a>
+      </div>
+
+      <!-- VÙNG CUỘN CHÍNH: DANH SÁCH MÓN + FORM THÔNG TIN GIAO HÀNG THÔNG MINH -->
+      <div id="cart-body-scroll" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        
+        <div id="cart-items-container" class="space-y-2.5">
+          <!-- Render bằng JavaScript -->
+        </div>
+
+        <!-- FORM XỬ LÝ ĐƠN & ĐỊA CHỈ GIAO HÀNG (HIỆN KHI CÓ MÓN TRONG GIỎ) -->
+        <div id="checkout-form-panel" class="bg-white rounded-3xl border border-amber-300/80 p-4 sm:p-5 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-amber-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-black flex items-center justify-center">✓</span>
+              <h4 class="font-drypt text-lg text-sun-dark uppercase tracking-wide">Thông Tin Nhận Đơn</h4>
+            </div>
+            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900">Tự động lưu</span>
+          </div>
+
+          <!-- 1. Chuyển đổi Hình thức Nhận: Giao tận nơi 2km vs Ghé quán lấy -->
+          <div class="grid grid-cols-2 gap-2 p-1 bg-amber-50/90 rounded-2xl border border-amber-200/70 text-xs">
+            <button type="button" id="tab-mode-delivery" onclick="setOrderMode('delivery')" class="py-2 px-3 rounded-xl font-black bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-sm flex items-center justify-center gap-1.5 transition-all">
+              <span>🛵 Giao Tận Nơi (2km)</span>
+            </button>
+            <button type="button" id="tab-mode-pickup" onclick="setOrderMode('pickup')" class="py-2 px-3 rounded-xl font-bold text-stone-700 hover:bg-white/60 flex items-center justify-center gap-1.5 transition-all">
+              <span>🏪 Ghé Quán Lấy</span>
+            </button>
+          </div>
+
+          <!-- 2. Tên & Số điện thoại khách hàng -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-stone-700 mb-1">Tên của bạn</label>
+              <input type="text" id="chk-name" oninput="saveCustomerDraft()" placeholder="VD: Anh Nam / Chị Lan" class="w-full bg-amber-50/40 border border-amber-200 rounded-xl px-3 py-2 text-xs text-stone-800 focus:outline-none focus:border-orange-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-stone-700 mb-1">Số điện thoại <span class="text-rose-500">*</span></label>
+              <input type="tel" id="chk-phone" oninput="saveCustomerDraft()" placeholder="VD: 0988 xxx xxx" class="w-full bg-amber-50/40 border border-amber-200 rounded-xl px-3 py-2 text-xs text-stone-800 focus:outline-none focus:border-orange-500">
+            </div>
+          </div>
+
+          <!-- 3. Khối Địa chỉ giao hàng (Hiện khi chọn Giao Tận Nơi) -->
+          <div id="delivery-address-block" class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <label class="text-[11px] font-bold text-stone-700">Khu vực giao nhanh (Bán kính 2km)</label>
+              <button type="button" onclick="detectCustomerGPS()" id="btn-gps-detect" class="text-[11px] font-black text-orange-700 hover:text-orange-800 flex items-center gap-1 bg-orange-50 hover:bg-orange-100 border border-orange-200 px-2.5 py-1 rounded-lg transition-all">
+                <i data-lucide="locate-fixed" class="w-3 h-3"></i>
+                <span>Định vị GPS & Tính km</span>
+              </button>
+            </div>
+
+            <!-- Chọn nhanh Khu vực mẫu trong bán kính 2km -->
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="selectQuickArea('Khu Phố 1, Quận Trung Tâm')" class="area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all">📍 Khu Phố 1 (&lt; 500m)</button>
+              <button type="button" onclick="selectQuickArea('Khu Văn Phòng, Quận Trung Tâm')" class="area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all">📍 Khu Văn Phòng</button>
+              <button type="button" onclick="selectQuickArea('Khu Dân Cư Trung Tâm')" class="area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all">📍 Khu Dân Cư</button>
+              <button type="button" onclick="selectQuickArea('Tòa Nhà Thương Mại, Quận Trung Tâm')" class="area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all">📍 Tòa Nhà Thương Mại</button>
+              <button type="button" onclick="selectQuickArea('Trường Học / Cơ Quan, Quận Trung Tâm')" class="area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all">📍 Trường Học / Cơ Quan</button>
+              <button type="button" onclick="selectQuickArea('Khu Đô Thị Mới, Quận Trung Tâm')" class="area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all">📍 Khu Đô Thị Mới</button>
+            </div>
+
+            <!-- Thông báo khoảng cách GPS tới quán mẫu -->
+            <div id="gps-distance-badge" class="hidden p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 font-semibold"></div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-stone-700 mb-1">Địa chỉ nhận hàng chi tiết <span class="text-rose-500">*</span></label>
+              <input type="text" id="chk-address" oninput="saveCustomerDraft()" placeholder="Số nhà, tòa nhà, đường, khu phố..." class="w-full bg-amber-50/40 border border-amber-200 rounded-xl px-3 py-2 text-xs text-stone-800 focus:outline-none focus:border-orange-500">
+            </div>
+          </div>
+
+          <!-- Khối thông báo khi chọn Ghé Quán Lấy -->
+          <div id="pickup-info-block" class="hidden p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-950 space-y-1">
+            <p class="font-black text-orange-800">🏪 Nhận đồ tại quán: Số 123 Đường Trung Tâm, Khu Phố 1</p>
+            <p class="text-[11px] text-stone-600">Quán sẽ pha sẵn đúng giờ bạn chọn, bạn ghé qua nhận ngay không cần chờ đợi.</p>
+          </div>
+
+          <!-- 4. Thời gian nhận & Phương thức thanh toán (Chỉ cho phép Chuyển khoản) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label id="lbl-chk-time" class="block text-[11px] font-bold text-stone-700 mb-1">Thời gian nhận</label>
+              <select id="chk-time" onchange="toggleCustomTime()" class="w-full bg-amber-50/40 border border-amber-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-stone-800 focus:outline-none focus:border-orange-500">
+                <option id="opt-time-asap" value="Giao ngay (15 - 25 phút)">⚡ Giao ngay (15-25p)</option>
+                <option value="Sau 30 phút">🕒 Sau 30 phút</option>
+                <option value="Sau 1 tiếng">🕒 Sau 1 tiếng</option>
+                <option value="custom">⏰ Chọn giờ cụ thể...</option>
+              </select>
+              <input type="time" id="chk-custom-time" oninput="saveCustomerDraft()" class="hidden mt-1.5 w-full bg-amber-50/40 border border-amber-200 rounded-xl px-3 py-1.5 text-xs text-stone-800">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-stone-700 mb-1">Thanh toán (Chỉ Chuyển khoản)</label>
+              <select id="chk-payment" onchange="saveCustomerDraft()" class="w-full bg-emerald-50/70 border border-emerald-300 rounded-xl px-2.5 py-2 text-xs font-bold text-emerald-950 focus:outline-none focus:border-emerald-600">
+                <option value="Chuyển khoản QR Ngân hàng">🏦 Chuyển khoản QR</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 5. Ghi chú cho Shipper / Quán -->
+          <div>
+            <label id="lbl-chk-note" class="block text-[11px] font-bold text-stone-700 mb-1">Lời nhắn khi giao hàng (Tùy chọn)</label>
+            <input type="text" id="chk-note" oninput="saveCustomerDraft()" placeholder="VD: Gọi điện khi tới cổng, xin thêm túi treo xe..." class="w-full bg-amber-50/40 border border-amber-200 rounded-xl px-3 py-2 text-xs text-stone-800 focus:outline-none focus:border-orange-500">
+          </div>
+        </div>
+
+      </div>
+
+      <div id="cart-empty-state" class="hidden flex-1 flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-16 h-16 rounded-full bg-amber-100/60 text-amber-600 flex items-center justify-center mb-3">
+          <i data-lucide="coffee" class="w-8 h-8"></i>
+        </div>
+        <h4 id="empty-title" class="font-bold text-sun-dark text-sm mb-1">Giỏ hàng đang trống</h4>
+        <p id="empty-desc" class="text-xs text-stone-500 max-w-xs mb-4">Hãy chọn món cà phê hoặc trà trái cây tươi mát để quán chuẩn bị nhé!</p>
+        <button onclick="closeCart(); location.href='#menu'" id="empty-btn" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-sun-dark text-xs font-black rounded-full shadow-sm">
+          Xem Thực Đơn
+        </button>
+      </div>
+
+      <div id="cart-footer" class="p-4 sm:p-5 border-t border-amber-200 bg-white space-y-2.5 shrink-0">
+        <div class="flex justify-between items-baseline">
+          <span id="total-lbl" class="text-xs font-bold text-stone-600">Tổng cộng tiền món:</span>
+          <span id="cart-total-display" class="font-heading text-2xl font-black text-orange-700">0₫</span>
+        </div>
+
+        <button onclick="orderViaZalo()" class="w-full py-3.5 bg-gradient-to-r from-orange-600 via-amber-500 to-yellow-500 hover:from-orange-700 hover:to-amber-600 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25">
+          <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          <span id="btn-zalo-order">Xác Nhận & Tạo Phiếu Đặt Hàng</span>
+        </button>
+
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="quickSendZaloDirect()" class="py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Zalo Quán</span>
+          </button>
+          <button type="button" onclick="openDemoFacebook()" class="py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1">
+            <i data-lucide="facebook" class="w-3.5 h-3.5"></i>
+            <span>Fanpage</span>
+          </button>
+          <a href="tel:0900123456" class="py-2.5 bg-sun-dark hover:bg-black text-amber-300 font-bold text-[11px] uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1">
+            <i data-lucide="phone-call" class="w-3.5 h-3.5 text-yellow-300"></i>
+            <span id="btn-direct-call">Gọi Điện</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL QUÉT QR MỞ WEB TRÊN ĐIỆN THOẠI (MỌI MẠNG 4G / 5G / WI-FI) -->
+  <!-- ========================================================================= -->
+  <div id="qr-phone-modal" class="fixed inset-0 z-[65] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white border-2 border-amber-400 max-w-sm w-full rounded-3xl p-6 relative shadow-2xl text-center space-y-4">
+      <button onclick="closeQrPhoneModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-700 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+        <i data-lucide="smartphone" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="font-drypt text-2xl text-sun-dark uppercase">Mở Trên Điện Thoại (Mọi Nơi)</h3>
+        <p class="text-xs text-stone-600 mt-1">Quét mã QR hoặc mở link Internet bên dưới bằng 4G / 5G / Wi-Fi bất kỳ:</p>
+      </div>
+      <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 inline-block mx-auto">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://ln04tm.github.io/Cafe/" alt="QR Code Mở Trên Điện Thoại" class="w-44 h-44 mx-auto rounded-xl">
+      </div>
+      <div class="space-y-1.5">
+        <a href="https://ln04tm.github.io/Cafe/" target="_blank" rel="noopener noreferrer" class="block bg-emerald-50 border border-emerald-300 rounded-xl py-2 px-3 text-xs font-mono font-bold text-emerald-800 hover:underline select-all">
+          https://ln04tm.github.io/Cafe/
+        </a>
+        <div class="text-[10px] text-stone-500">
+          Hoạt động 24/7 trên mọi mạng 4G / 5G / Wi-Fi toàn quốc
+        </div>
+      </div>
+      <button onclick="closeQrPhoneModal()" class="w-full py-2.5 bg-sun-dark text-amber-300 font-bold text-xs uppercase rounded-xl">
+        Đóng
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL XEM BẢNG GIÁ TỔNG HỢP (THAY THẾ HOÀN TOÀN ẢNH MENU GỐC ĐỂ BẢO MẬT) -->
+  <!-- ========================================================================= -->
+  <div id="menu-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3">
+    <div class="bg-white max-w-lg w-full rounded-3xl p-5 flex flex-col max-h-[92vh] relative shadow-2xl border-2 border-amber-300">
+      <div class="flex items-center justify-between pb-3 border-b border-amber-200">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900">BẢNG GIÁ MẪU DEMO</span>
+          <h4 id="orig-modal-title" class="font-drypt text-2xl text-sun-dark uppercase mt-1">Bảng Menu Tổng Hợp • AURORA Coffee</h4>
+        </div>
+        <button onclick="closeMenuModal()" class="text-stone-400 hover:text-stone-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="overflow-y-auto my-3 flex-1 bg-gradient-to-b from-amber-50/70 to-orange-50/40 rounded-2xl p-4 space-y-4 border border-amber-200/80 text-xs">
+        <div>
+          <h5 class="font-drypt text-base text-orange-800 uppercase border-b border-amber-300 pb-1 mb-2">☕ Cà Phê Phin Truyền Thống</h5>
+          <div class="space-y-1.5 font-semibold text-stone-800">
+            <div class="flex justify-between"><span>1. Cafe đen (Black Coffee)</span><span class="font-black text-orange-700">15.000₫</span></div>
+            <div class="flex justify-between"><span>2. Cafe nâu (Milk Coffee)</span><span class="font-black text-orange-700">15.000₫</span></div>
+            <div class="flex justify-between"><span>3. Cafe kem muối (Salted Cream Coffee)</span><span class="font-black text-orange-700">20.000₫</span></div>
+            <div class="flex justify-between"><span>4. Bạc sỉu (White Milk Coffee)</span><span class="font-black text-orange-700">20.000₫</span></div>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="font-drypt text-base text-orange-800 uppercase border-b border-amber-300 pb-1 mb-2">🍵 Non-Coffee & Cacao</h5>
+          <div class="space-y-1.5 font-semibold text-stone-800">
+            <div class="flex justify-between"><span>5. Matcha Latte</span><span class="font-black text-orange-700">25.000₫</span></div>
+            <div class="flex justify-between"><span>6. Ca cao nguyên chất (Rich Cocoa)</span><span class="font-black text-orange-700">25.000₫</span></div>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="font-drypt text-base text-orange-800 uppercase border-b border-amber-300 pb-1 mb-2">🍊 Nước Ép Trái Cây Tươi</h5>
+          <div class="space-y-1.5 font-semibold text-stone-800">
+            <div class="flex justify-between"><span>7. Nước ép dứa (Pineapple Juice)</span><span class="font-black text-orange-700">25.000₫</span></div>
+            <div class="flex justify-between"><span>8. Nước ép cam (Fresh Orange Juice)</span><span class="font-black text-orange-700">30.000₫</span></div>
+            <div class="flex justify-between"><span>9. Nước ép dưa hấu (Watermelon Juice)</span><span class="font-black text-orange-700">25.000₫</span></div>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="font-drypt text-base text-orange-800 uppercase border-b border-amber-300 pb-1 mb-2">🍹 Trà Trái Cây Nhiệt Đới</h5>
+          <div class="space-y-1.5 font-semibold text-stone-800">
+            <div class="flex justify-between"><span>10. Trà tắc (Kumquat Tea)</span><span class="font-black text-orange-700">15.000₫</span></div>
+            <div class="flex justify-between"><span>11. Trà mãng cầu (Soursop Tea)</span><span class="font-black text-orange-700">25.000₫</span></div>
+            <div class="flex justify-between"><span>12. Trà hoa quả nhiệt đới (Mixed Fruit Tea)</span><span class="font-black text-orange-700">25.000₫</span></div>
+            <div class="flex justify-between"><span>13. Mận mãng cầu (Plum Soursop Tea)</span><span class="font-black text-orange-700">30.000₫</span></div>
+            <div class="flex justify-between"><span>14. Trà măng cụt chanh leo</span><span class="font-black text-orange-700">30.000₫</span></div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-amber-100/80 text-[11px] text-amber-950 font-medium text-center">
+          💡 Khi triển khai cho khách hàng, khu vực này có thể hiển thị bảng menu thiết kế riêng hoặc ảnh chụp thực đơn thực tế của quán.
+        </div>
+      </div>
+
+      <div class="pt-2 flex items-center justify-between text-xs">
+        <span class="text-amber-700 font-bold">Hotline Demo: 0900 123 456</span>
+        <button onclick="closeMenuModal()" id="orig-modal-close" class="px-5 py-2 bg-sun-dark text-amber-300 font-bold rounded-xl">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL PHIẾU XÁC NHẬN ĐƠN HÀNG & GỬI ZALO / SMS 1-CHẠM -->
+  <!-- ========================================================================= -->
+  <div id="order-ticket-modal" class="fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white border-2 border-amber-400 max-w-md w-full rounded-3xl p-5 sm:p-6 relative shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-amber-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black">
+            <i data-lucide="receipt" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-drypt text-2xl text-sun-dark uppercase leading-none">Phiếu Đặt Hàng</h3>
+            <p id="ticket-code-label" class="text-[11px] font-bold text-orange-700 mt-0.5">Mã đơn: #CF-1024 • Đã sao chép nội dung</p>
+          </div>
+        </div>
+        <button onclick="closeOrderTicketModal()" class="text-stone-400 hover:text-stone-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-3.5">
+        <pre id="ticket-preview-text" class="text-xs text-stone-800 whitespace-pre-wrap font-sans leading-relaxed max-h-60 overflow-y-auto"></pre>
+      </div>
+
+      <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 flex items-start gap-2">
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+        <span><strong>Đã tự động sao chép phiếu đơn!</strong> Khi cửa sổ Zalo mở ra, bạn chỉ cần nhấn <strong>Dán (Ctrl+V)</strong> vào ô chat của quán là xong.</span>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button onclick="confirmOpenZaloWithTicket()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Gửi Qua Zalo Quán</span>
+          </button>
+          <button onclick="confirmOpenFacebookWithTicket()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+            <i data-lucide="facebook" class="w-4 h-4"></i>
+            <span>Gửi Qua Fanpage</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="copyOrderTicket()" class="py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span id="btn-copy-ticket-text">Sao chép lại</span>
+          </button>
+          <button onclick="sendOrderSMS()" class="py-2.5 bg-stone-900 hover:bg-black text-amber-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+            <span>Gửi qua SMS</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST THÔNG BÁO -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-sun-dark text-white border border-amber-400/50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+      <div class="w-7 h-7 rounded-full bg-amber-500 text-sun-dark flex items-center justify-center font-black">
+        <i data-lucide="check" class="w-4 h-4"></i>
+      </div>
+      <div>
+        <p id="toast-title" class="text-xs font-bold text-white">Đã thêm vào đơn</p>
+        <p id="toast-msg" class="text-[11px] text-amber-200">Cafe kem muối</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NÚT GỌI ĐIỆN NỔI GÓC DƯỚI BÊN TRÁI -->
+  <a href="tel:0900123456" class="fixed bottom-6 left-6 z-40 w-13 h-13 p-3.5 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 text-sun-dark border-2 border-yellow-200 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform animate-bounce" title="Gọi Hotline Demo 0900 123 456">
+    <i data-lucide="phone-call" class="w-6 h-6 text-sun-dark"></i>
+  </a>
+
+  <!-- FOOTER CHÂN TRANG -->
+  <footer class="bg-sun-dark text-stone-300 text-xs py-12 border-t border-amber-950 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div>
+        <span class="font-drypt text-2xl text-white tracking-tight">AURORA COFFEE (BẢN MẪU DEMO)</span>
+        <p id="ft-tagline" class="text-xs text-amber-200/80 mt-1">Mẫu website đặt món & giao hàng quán cà phê • Hotline Demo: 0900 123 456</p>
+        <p id="ft-address" class="text-xs text-amber-300/90 mt-1 flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-yellow-400"></i>
+          <span>Địa chỉ mẫu: <strong>Số 123 Đường Trung Tâm, Khu Phố 1, Quận Trung Tâm</strong></span>
+          <a href="https://www.google.com/maps?q=Hoan+Kiem+Ha+Noi" target="_blank" rel="noopener noreferrer" class="text-yellow-400 underline ml-1 hover:text-white">Bản đồ</a>
+        </p>
+        <p id="ft-disclaimer" class="text-[10px] text-stone-500 mt-1">Phiên bản mẫu dùng để giới thiệu tính năng. Toàn bộ tên thương hiệu, địa chỉ, SĐT và menu sẽ được tùy biến riêng cho từng quán.</p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center sm:justify-end gap-4 text-xs font-semibold text-stone-400">
+        <a href="#menu" id="ft-menu-link" class="hover:text-amber-300">Thực Đơn</a>
+        <a href="#location-delivery" id="ft-loc-link" class="hover:text-amber-300">Vị Trí & Giao Hàng</a>
+        <button type="button" onclick="openDemoFacebook()" class="hover:text-blue-400 flex items-center gap-1 text-blue-300">
+          <i data-lucide="facebook" class="w-3.5 h-3.5"></i> Fanpage Mẫu
+        </button>
+        <a href="tel:0900123456" class="hover:text-amber-300">Hotline 0900 123 456</a>
+        <button onclick="openMenuModal()" id="ft-orig-link" class="hover:text-amber-300">Bảng Giá Mẫu</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- TỪ ĐIỂN 3 NGÔN NGỮ (VIETNAMESE, ENGLISH, CHINESE) & LOGIC ĐIỀU KHIỂN -->
+  <!-- ========================================================================= -->
+  <script>
+    function formatVND(amount) {
+      return new Intl.NumberFormat('vi-VN').format(amount) + '₫';
+    }
+
+    const DICT = {
+      vi: {
+        subBrand: "Mẫu Web Đặt Món & Giao Hàng",
+        menuLink: "<span class='block whitespace-nowrap font-bold'>Thực Đơn</span><span class='block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5'>(14 Món)</span>",
+        origLink: "Bảng Giá Mẫu",
+        cartText: "Giỏ",
+        ringText: "Trải nghiệm cuộn phim",
+        b1Tag: "NẮNG MAI VÀ CÀ PHÊ PHIN",
+        b1Title: "Ánh nắng ban mai<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400'>chạm từng giọt phin.</span>",
+        b1Desc: "Tia nắng vàng ấm áp chiếu qua khung cửa. Từng giọt cà phê phin nguyên chất rơi chậm rãi, hòa quyện hương thơm mộc mạc đánh thức trọn vẹn ngày mới.",
+        b1Scroll: "Cuộn xuống để xem tiếp hành trình",
+        b2Tag: "SÓNG SÁNH VÀNG ÓNG",
+        b2Title: "Hòa quyện sữa đặc<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400'>ấm áp ngọt bùi.</span>",
+        b2Desc: "Dưới ánh sáng ban mai dịu dàng, giọt cà phê đen nhánh hòa cùng lớp sữa đặc sánh béo, cuộn tròn thành những vệt hoa văn cẩm thạch tuyệt đẹp.",
+        b3Tag: "KHỞI ĐẦU NGÀY MỚI TRỌN VẸN",
+        b3Title: "Năng lượng nắng ấm<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400'>sẵn sàng trao tay.</span>",
+        b3Desc: "Ly cà phê nâu đậm đà, kem muối sánh mịn hay trà trái cây tươi mát đã sẵn sàng. Giao hàng tận nơi hỏa tốc trong ánh nắng mai thơm lừng.",
+        b3BtnMenu: "Xem Menu & Gọi Món",
+        mobDelivery: "🛵 Nắng Mai Giao Tận Nơi: 0900 123 456",
+        mobHeroSub: "ÁNH NẮNG MAI & CÀ PHÊ PHIN",
+        mobHeroDesc: "Pha phin mộc mạc đón ánh nắng sớm chan hòa. Hương vị cà phê nguyên chất cùng thực đơn 14 món trà trái cây tươi mát phục vụ mỗi ngày.",
+        mobBtnMenu: "Xem Thực Đơn 14 Món (Từ 15K)",
+        mobBtnCall: "Gọi Đặt Ngay",
+        mobBtnZalo: "Đặt Qua Zalo",
+        mobStat1: "Từ 15K",
+        mobStat1Sub: "Giá bình dân",
+        mobStat2: "100% Phin",
+        mobStat2Sub: "Nguyên chất",
+        mobStat3: "Giao Nhanh",
+        mobStat3Sub: "Bảo quản lạnh",
+        qbT1: "Nắng Sớm Mở Cửa",
+        qbD1: "06:00 - 22:00 tất cả các ngày trong tuần",
+        qbT2: "Giao Hàng Tận Nơi (2km)",
+        qbD2: "Hotline Demo: <strong class='text-amber-700 font-bold'>0900 123 456</strong>",
+        qbT3: "Cam Kết Tươi Mới",
+        qbD3: "Hạt sạch nguyên chất, trái cây tươi ép mỗi ngày",
+        menuTag: "THỰC ĐƠN MẪU TRỰC QUAN",
+        menuTitle: "MENU AURORA COFFEE (DEMO)",
+        menuDesc: "Giao diện đặt món thông minh. Nhấp vào bất kỳ món nào để chọn lượng đá, độ ngọt và thêm vào đơn.",
+        catAll: "Tất cả (14)",
+        catCoffee: "☕ Cà Phê (4)",
+        catNonCoffee: "🍵 Non-Coffee (2)",
+        catJuice: "🍊 Nước Ép (3)",
+        catTea: "🍹 Trà Trái Cây (5)",
+        btnOrigImage: "Xem Bảng Giá Tổng Hợp (Mẫu Demo)",
+        lblIce: "Lượng Đá",
+        lblSugar: "Độ Ngọt / Đường",
+        lblNote: "Ghi chú riêng cho quán",
+        notePlaceholder: "Vd: Cho đá riêng, nhiều sữa hơn...",
+        addBtnPrefix: "Thêm Vào Đơn: ",
+        chooseBtn: "Chọn",
+        ice100: "100% Đá",
+        ice70: "70% Đá",
+        ice50: "50% Đá",
+        iceNone: "Không đá",
+        sugStd: "Chuẩn vị",
+        sug70: "70% ngọt",
+        sug50: "Ít ngọt",
+        sugNone: "0% đường",
+        drawerTitle: "Giỏ Hàng AURORA",
+        itemCountSuffix: " ly đã chọn",
+        emptyTitle: "Giỏ hàng đang trống",
+        emptyDesc: "Hãy chọn món cà phê hoặc trà trái cây tươi mát để quán chuẩn bị nhé!",
+        emptyBtn: "Xem Thực Đơn",
+        totalLbl: "Tổng cộng tiền món:",
+        btnZaloOrder: "Xác Nhận & Tạo Phiếu Đặt Hàng",
+        btnDirectCall: "Gọi Điện",
+        origModalTitle: "Bảng Menu Tổng Hợp • AURORA Coffee",
+        origModalClose: "Đóng",
+        toastTitle: "Đã thêm vào đơn",
+        ftTagline: "Mẫu website đặt món & giao hàng quán cà phê • Hotline Demo: 0900 123 456",
+        ftDisclaimer: "Phiên bản mẫu dùng để giới thiệu tính năng. Toàn bộ tên thương hiệu, địa chỉ, SĐT và menu sẽ được tùy biến riêng cho từng quán.",
+        navLocLink: "<span class='block whitespace-nowrap font-bold'>Vị Trí & Giao Hàng</span><span class='block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5'>(2km)</span>",
+        locTag: "VỊ TRÍ QUÁN MẪU & KHU VỰC GIAO HÀNG",
+        locTitle: "123 ĐƯỜNG TRUNG TÂM • BÁN KÍNH GIAO HÀNG 2KM",
+        locDesc: "Thưởng thức hương vị cà phê phin mộc mạc và trà tươi tại quán hoặc nhận hàng tận tay trong bán kính 2km quanh vị trí quán (Chỉ nhận chuyển khoản).",
+        locBadgeOpen: "Đang Mở Cửa (06:00 - 22:00)",
+        locTaglineText: "Mẫu Website Đặt Món & Giao Hàng Quán Cà Phê",
+        locLblAddr: "Vị Trí Quán (Mẫu Demo)",
+        locValAddr: "Số 123 Đường Trung Tâm, Khu Phố 1, Quận Trung Tâm",
+        locLblRad: "Phạm Vi & Thanh Toán Giao Hàng",
+        locValRad: "Ship bán kính 2km quanh quán • Chỉ nhận Chuyển khoản",
+        locValRadSub: "Phục vụ nhanh Khu Phố 1, Khu Văn Phòng, Khu Dân Cư Trung Tâm, Tòa Nhà Thương Mại, Trường Học...",
+        locLblHotline: "Hotline & Fanpage Mẫu Demo",
+        locBtnMap: "Google Maps",
+        locBtnCall: "Gọi Quán",
+        locMapHeader: "Bản Đồ Vị Trí & Tâm Giao Hàng 2km (Minh Họa)",
+        locMapFullLink: "Xem bản đồ đầy đủ",
+        locBadgePinTitle: "Tâm Giao Hàng Mẫu: 123 Đường Trung Tâm",
+        locBadgePinSub: "Giao nhanh bán kính 2km • Chỉ nhận Chuyển khoản • 0900 123 456",
+        locFeat1Title: "Ship Nhanh Bán Kính 2km",
+        locFeat1Desc: "Giao nhanh quanh vị trí quán trong bán kính 2km, tự động định vị khoảng cách GPS và thanh toán chuyển khoản tiện lợi.",
+        locFeat2Title: "Bảo Quản Đá & Nhiệt Độ Chu Đáo",
+        locFeat2Desc: "Đá riêng theo ý muốn, cốc nắp kín giữ lạnh giữ nóng chuyên dụng, đồ uống đến tay vẫn vẹn nguyên vị tươi.",
+        locFeat3Title: "Đặt Món Trực Tiếp Siêu Nhanh",
+        locFeat3Desc: "Bấm chọn ly trên web tạo phiếu đơn gửi Zalo/Fanpage hoặc gọi Hotline 0900 123 456, quán nhận đơn và pha ngay tức thì.",
+        cartDeliveryNotice: "Giao hàng bán kính 2km quanh quán (Chỉ nhận chuyển khoản) • Hotline Demo: 0900 123 456"
+      },
+      en: {
+        subBrand: "Cafe Ordering & Delivery Web Template",
+        menuLink: "<span class='block whitespace-nowrap font-bold'>Menu</span><span class='block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5'>(14 Items)</span>",
+        origLink: "Price Board",
+        cartText: "Bag",
+        ringText: "Scroll cinematic experience",
+        b1Tag: "MORNING SUNLIGHT & PHIN DRIP",
+        b1Title: "Morning golden sunbeams<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400'>greeting every drip.</span>",
+        b1Desc: "Warm morning light streaming through the window. Pure drip phin coffee falling gently, infusing the quiet morning with rich roasted aroma.",
+        b1Scroll: "Scroll down to continue the journey",
+        b2Tag: "HONEYED GOLDEN SWIRL",
+        b2Title: "Swirling with condensed milk<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-400'>rich sweet warmth.</span>",
+        b2Desc: "Bathed in morning sunlight, deep dark espresso meets smooth condensed milk, weaving an exquisite marble pattern.",
+        b3Tag: "THE PERFECT MORNING START",
+        b3Title: "Sunlit warm energy<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400'>ready for your day.</span>",
+        b3Desc: "Rich Milk Coffee 15K, Salted Cream Coffee 20K or fresh fruit teas delivered cold and crisp to your doorstep.",
+        b3BtnMenu: "View Menu & Order",
+        mobDelivery: "🛵 Morning Delivery: 0900 123 456",
+        mobHeroSub: "MORNING SUN & PHIN COFFEE",
+        mobHeroDesc: "Traditional slow-drip coffee greeted by morning sunbeams, plus a 14-item fresh fruit tea and real juice menu daily.",
+        mobBtnMenu: "Explore 14 Drinks (From 15K)",
+        mobBtnCall: "Call Now",
+        mobBtnZalo: "Order via Zalo",
+        mobStat1: "From 15K",
+        mobStat1Sub: "Affordable",
+        mobStat2: "100% Phin",
+        mobStat2Sub: "Pure Roast",
+        mobStat3: "Fast Ship",
+        mobStat3Sub: "Cold Protected",
+        qbT1: "Morning Sun Hours",
+        qbD1: "06:00 - 22:00 Every day of the week",
+        qbT2: "Doorstep Delivery (2km)",
+        qbD2: "Demo Hotline: <strong class='text-amber-700 font-bold'>0900 123 456</strong>",
+        qbT3: "Fresh Promise",
+        qbD3: "Pure single-origin beans, fresh fruit pressed daily",
+        menuTag: "INTERACTIVE DEMO MENU",
+        menuTitle: "AURORA COFFEE MENU (DEMO)",
+        menuDesc: "Smart ordering interface. Click any drink to customize ice, sweetness, and order.",
+        catAll: "All (14)",
+        catCoffee: "☕ Coffee (4)",
+        catNonCoffee: "🍵 Non-Coffee (2)",
+        catJuice: "🍊 Juice (3)",
+        catTea: "🍹 Fruit Tea (5)",
+        btnOrigImage: "View Full Price Board (Demo)",
+        lblIce: "Ice Level",
+        lblSugar: "Sweetness / Sugar",
+        lblNote: "Notes for the barista",
+        notePlaceholder: "E.g., ice on the side, extra milk...",
+        addBtnPrefix: "Add to Order: ",
+        chooseBtn: "Choose",
+        ice100: "100% Ice",
+        ice70: "70% Ice",
+        ice50: "50% Ice",
+        iceNone: "No Ice",
+        sugStd: "Standard",
+        sug70: "70% Sweet",
+        sug50: "Less Sweet",
+        sugNone: "0% Sugar",
+        drawerTitle: "AURORA Cart",
+        itemCountSuffix: " cups selected",
+        emptyTitle: "Your bag is empty",
+        emptyDesc: "Select fresh iced coffee or fruit tea to stock your order!",
+        emptyBtn: "Browse Menu",
+        totalLbl: "Items Subtotal:",
+        btnZaloOrder: "Confirm & Create Order Ticket",
+        btnDirectCall: "Call Store",
+        origModalTitle: "AURORA Coffee Price Board (Demo)",
+        origModalClose: "Close",
+        toastTitle: "Added to order",
+        ftTagline: "Cafe ordering & delivery web template • Demo Hotline: 0900 123 456",
+        ftDisclaimer: "Demo showcase template. All brand names, addresses, phone numbers, and menus are customized per shop.",
+        navLocLink: "<span class='block whitespace-nowrap font-bold'>Location & Delivery</span><span class='block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5'>(2km)</span>",
+        locTag: "DEMO LOCATION & DELIVERY COVERAGE",
+        locTitle: "123 CENTRAL STREET • 2KM DELIVERY RADIUS",
+        locDesc: "Enjoy rustic phin drip coffee and refreshing teas at our shop or delivered within a 2km radius around the store (Bank transfer only).",
+        locBadgeOpen: "Open Daily (06:00 - 22:00)",
+        locTaglineText: "Cafe Online Ordering & Delivery Showcase",
+        locLblAddr: "Store Location (Demo)",
+        locValAddr: "123 Central Street, Ward 1, Central District",
+        locLblRad: "Delivery Coverage & Payment",
+        locValRad: "2km radius around store • Bank Transfer Only",
+        locValRadSub: "Fast service across Ward 1, Office District, Residential Center, Commercial Tower...",
+        locLblHotline: "Demo Hotline & Fanpage",
+        locBtnMap: "Google Maps",
+        locBtnCall: "Call Store",
+        locMapHeader: "Location Map & 2km Delivery Hub (Demo)",
+        locMapFullLink: "View full map",
+        locBadgePinTitle: "Delivery Hub: 123 Central Street (Demo)",
+        locBadgePinSub: "Fast delivery within 2km • Bank transfer only • 0900 123 456",
+        locFeat1Title: "Fast 2km Radius Delivery",
+        locFeat1Desc: "Rapid delivery within 2km around the store with automatic GPS distance calculation and QR bank transfer.",
+        locFeat2Title: "Careful Cold & Ice Packing",
+        locFeat2Desc: "Ice packed separately on request, spill-proof sealed cups preserving crisp freshness.",
+        locFeat3Title: "Fast Direct Ordering",
+        locFeat3Desc: "Pick your drinks on the web to order via Zalo/Fanpage or call Demo Hotline 0900 123 456 for prompt brewing.",
+        cartDeliveryNotice: "Doorstep delivery within 2km radius (Bank transfer only) • Demo Hotline: 0900 123 456"
+      },
+      zh: {
+        subBrand: "咖啡店在线点单与外送网站模板",
+        menuLink: "<span class='block whitespace-nowrap font-bold'>菜单</span><span class='block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5'>(14款饮品)</span>",
+        origLink: "查看价目表",
+        cartText: "订单",
+        ringText: "滑动电影感体验",
+        b1Tag: "清晨阳光与滴漏咖啡",
+        b1Title: "温暖晨光洒入<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400'>映亮滴滴醇香。</span>",
+        b1Desc: "金色晨光穿透窗棂。慢滴咖啡纯正滴落，朴实芬芳唤醒崭新的一天。",
+        b1Scroll: "向下滑动继续探索",
+        b2Tag: "金黄流光交融",
+        b2Title: "融入香浓炼乳<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-yellow-400'>甘甜温润入心。</span>",
+        b2Desc: "在柔和晨曦中，浓黑咖啡滴融入金黄炼乳，宛若大理石般的温润纹理徐徐舒展。",
+        b3Tag: "元气满满的早晨",
+        b3Title: "晨曦暖阳活力<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400'>随时为您送达。</span>",
+        b3Desc: "醇香牛奶咖啡15K、咸奶油咖啡20K或新鲜水果茶，在晨光中极速配送到家。",
+        b3BtnMenu: "查看菜单并点单",
+        mobDelivery: "🛵 晨光外送演示: 0900 123 456",
+        mobHeroSub: "晨光与越南滴漏咖啡",
+        mobHeroDesc: "传统慢滴咖啡沐浴清晨暖阳，每日供应14款新鲜水果茶及原汁果汁。",
+        mobBtnMenu: "探索14款饮品 (15K起)",
+        mobBtnCall: "立即致电",
+        mobBtnZalo: "Zalo点单",
+        mobStat1: "15K 起",
+        mobStat1Sub: "实惠亲民",
+        mobStat2: "100% 滴漏",
+        mobStat2Sub: "纯正原豆",
+        mobStat3: "极速配送",
+        mobStat3Sub: "保冷锁鲜",
+        qbT1: "晨光营业时间",
+        qbD1: "每日 06:00 - 22:00 全天供应",
+        qbT2: "送货上门 (2km)",
+        qbD2: "演示热线: <strong class='text-amber-700 font-bold'>0900 123 456</strong>",
+        qbT3: "新鲜承诺",
+        qbD3: "纯正无添加咖啡豆，新鲜水果每日现榨",
+        menuTag: "互动演示菜单",
+        menuTitle: "AURORA 咖啡菜单 (演示版)",
+        menuDesc: "智能点单界面。点击任意饮品可自定义冰量与甜度。",
+        catAll: "全部 (14)",
+        catCoffee: "☕ 咖啡 (4)",
+        catNonCoffee: "🍵 无咖啡因 (2)",
+        catJuice: "🍊 鲜榨果汁 (3)",
+        catTea: "🍹 水果茶 (5)",
+        btnOrigImage: "查看完整价目表 (演示)",
+        lblIce: "冰量选择",
+        lblSugar: "甜度 / 糖量",
+        lblNote: "特殊要求备注",
+        notePlaceholder: "例如：冰块分开放、多加炼乳...",
+        addBtnPrefix: "加入订单: ",
+        chooseBtn: "选择",
+        ice100: "正常冰 (100%)",
+        ice70: "少冰 (70%)",
+        ice50: "微冰 (50%)",
+        iceNone: "去冰",
+        sugStd: "标准甜度",
+        sug70: "七分甜",
+        sug50: "半糖 (微甜)",
+        sugNone: "不加糖",
+        drawerTitle: "AURORA 饮品单",
+        itemCountSuffix: " 杯已选",
+        emptyTitle: "购物袋为空",
+        emptyDesc: "请从菜单中选择喜爱的冰咖啡或新鲜水果茶！",
+        emptyBtn: "浏览菜单",
+        totalLbl: "饮品小计:",
+        btnZaloOrder: "确认并生成订单",
+        btnDirectCall: "致电门店",
+        origModalTitle: "AURORA 咖啡完整价目表 (演示)",
+        origModalClose: "关闭",
+        toastTitle: "已加入订单",
+        ftTagline: "咖啡店在线点单与外送模板 • 演示热线: 0900 123 456",
+        ftDisclaimer: "功能演示模板。品牌名称、地址、电话及菜单均可根据门店实际信息定制。",
+        navLocLink: "<span class='block whitespace-nowrap font-bold'>位置与外送</span><span class='block text-[10px] text-amber-300 font-bold whitespace-nowrap mt-0.5'>(2km)</span>",
+        locTag: "演示门店位置与外送范围",
+        locTitle: "中心大道 123 号 • 2公里外送半径",
+        locDesc: "欢迎到店品尝传统慢滴咖啡与新鲜茶饮，或享受门店周边2公里内的快速送达服务（仅限银行转账）。",
+        locBadgeOpen: "营业中 (每日 06:00 - 22:00)",
+        locTaglineText: "咖啡店在线点单与外送网站模板",
+        locLblAddr: "门店地址 (演示)",
+        locValAddr: "中心区第一街区中心大道 123 号",
+        locLblRad: "配送范围与支付方式",
+        locValRad: "门店周边 2 公里 • 仅支持转账",
+        locValRadSub: "快速配送第一街区、办公区、中心住宅区及商业大厦周边 2 公里区域",
+        locLblHotline: "演示热线与官方主页",
+        locBtnMap: "谷歌地图",
+        locBtnCall: "致电门店",
+        locMapHeader: "门店地图与2公里配送中心 (演示)",
+        locMapFullLink: "查看完整地图",
+        locBadgePinTitle: "配送中心: 中心大道 123 号 (演示)",
+        locBadgePinSub: "周边2公里快速配送 • 仅限转账 • 0900 123 456",
+        locFeat1Title: "2公里极速配送",
+        locFeat1Desc: "极速送达门店周边 2 公里范围，自动计算GPS距离，支持二维码银行转账。",
+        locFeat2Title: "贴心保冷与分装冰块",
+        locFeat2Desc: "可按需分开放冰，密封防漏杯装，锁住新鲜与原豆浓香。",
+        locFeat3Title: "极速点单即刻现做",
+        locFeat3Desc: "网页选好后一键生成订单发送Zalo/主页或致电 0900 123 456。",
+        cartDeliveryNotice: "支持门店周边2公里配送（仅限转账） • 演示热线: 0900 123 456"
+      }
+    };
+
+    const MENU_ITEMS = [
+      // 1. COFFEE
+      {
+        id: 'cafe-den',
+        group: 'coffee',
+        price: 15000,
+        badge: '15K',
+        name: { vi: 'Cafe đen', en: 'Black Coffee', zh: '黑咖啡' },
+        subName: { vi: 'Black Coffee | 黑咖啡', en: 'Pure Drip Black Coffee', zh: '纯滴漏黑咖啡' },
+        desc: { 
+          vi: 'Cà phê nguyên chất pha phin đậm đặc, thơm nồng nàn.', 
+          en: 'Pure strong Vietnamese drip black coffee, rich morning aroma.',
+          zh: '传统慢滴纯黑咖啡，浓郁醇厚，提神醒脑。'
+        }
+      },
+      {
+        id: 'cafe-nau',
+        group: 'coffee',
+        price: 15000,
+        badge: '15K',
+        name: { vi: 'Cafe nâu', en: 'Milk Coffee', zh: '牛奶咖啡' },
+        subName: { vi: 'Milk Coffee | 牛奶咖啡', en: 'Traditional Vietnamese Milk Coffee', zh: '传统炼乳牛奶咖啡' },
+        desc: { 
+          vi: 'Cà phê sữa truyền thống ngọt bùi béo ngậy chuẩn vị.', 
+          en: 'Classic sweet and creamy coffee layered with condensed milk.',
+          zh: '香甜浓郁的传统滴漏加奶咖啡，口感丝滑。'
+        }
+      },
+      {
+        id: 'cafe-kem-muoi',
+        group: 'coffee',
+        price: 20000,
+        badge: 'HOT 20K',
+        name: { vi: 'Cafe kem muối', en: 'Salted Cream Coffee', zh: '咸奶油咖啡' },
+        subName: { vi: 'Salted Cream Coffee | 咸奶油咖啡', en: 'Signature Salted Cream Cold Brew', zh: '招牌热销 咸奶油咖啡' },
+        desc: { 
+          vi: 'Lớp kem béo mặn sánh mịn hòa quyện cùng cốt cà phê thơm lừng.', 
+          en: 'Velvety salted cream cap over fragrant traditional brew.',
+          zh: '细腻咸香奶油奶盖搭配浓香咖啡底，本店销量之王。'
+        }
+      },
+      {
+        id: 'bac-siu',
+        group: 'coffee',
+        price: 20000,
+        badge: '20K',
+        name: { vi: 'Bạc sỉu', en: 'Vietnamese Milk Coffee', zh: '越南牛奶咖啡' },
+        subName: { vi: 'Vietnamese Milk Coffee | 越南牛奶咖啡', en: 'Sweet Creamy White Coffee', zh: '白咖啡 多奶微甜' },
+        desc: { 
+          vi: 'Nhiều sữa ít cà phê, vị béo thơm ngọt ngào êm ái.', 
+          en: 'Extra rich milk with a light kick of aromatic coffee.',
+          zh: '多奶少咖啡，奶香浓郁，温和顺口。'
+        }
+      },
+
+      // 2. NON-COFFEE
+      {
+        id: 'matcha',
+        group: 'non-coffee',
+        price: 25000,
+        badge: '25K',
+        name: { vi: 'Matcha', en: 'Matcha Latte', zh: '抹茶' },
+        subName: { vi: 'Matcha | 抹茶', en: 'Japanese Green Tea Latte', zh: '清香日式抹茶' },
+        desc: { 
+          vi: 'Trà xanh thơm dịu hòa cùng sữa tươi thanh lọc cơ thể.', 
+          en: 'Aromatic green tea blended with smooth fresh milk.',
+          zh: '淡雅纯抹茶融入鲜甜奶香，清爽解腻。'
+        }
+      },
+      {
+        id: 'ca-cao',
+        group: 'non-coffee',
+        price: 25000,
+        badge: '25K',
+        name: { vi: 'Ca cao', en: 'Rich Cocoa', zh: '可可' },
+        subName: { vi: 'Cocoa | 可可', en: 'Warm or Iced Pure Cocoa', zh: '香浓纯纯可可' },
+        desc: { 
+          vi: 'Ca cao nguyên chất béo ngậy, ngọt thơm ấm lòng.', 
+          en: 'Rich pure cocoa with a velvety chocolate finish.',
+          zh: '纯可可特调，香甜醇厚，回味无穷。'
+        }
+      },
+
+      // 3. JUICE
+      {
+        id: 'nuoc-ep-dua',
+        group: 'juice',
+        price: 25000,
+        badge: '25K',
+        name: { vi: 'Nước ép dứa', en: 'Pineapple Juice', zh: '菠萝汁' },
+        subName: { vi: 'Pineapple Juice | 菠萝汁', en: '100% Fresh Pressed Pineapple', zh: '100% 鲜榨菠萝汁' },
+        desc: { 
+          vi: 'Dứa mọng nước ép tươi nguyên chất, dồi dào vitamin C.', 
+          en: 'Fresh tropical pineapple juice, full of natural vitamins.',
+          zh: '多汁菠萝现点现榨，富含天然维生素C。'
+        }
+      },
+      {
+        id: 'nuoc-ep-cam',
+        group: 'juice',
+        price: 30000,
+        badge: '30K',
+        name: { vi: 'Nước ép cam', en: 'Fresh Orange Juice', zh: '橙汁' },
+        subName: { vi: 'Orange Juice | 橙汁', en: '100% Freshly Squeezed Orange', zh: '鲜榨原汁橙汁' },
+        desc: { 
+          vi: 'Cam tươi vắt trực tiếp, vị ngọt thanh mát sảng khoái.', 
+          en: 'Squeezed fresh upon order, pure citrus boost.',
+          zh: '新鲜甜橙直接压榨，酸甜爽口生津止渴。'
+        }
+      },
+      {
+        id: 'nuoc-ep-dua-hau',
+        group: 'juice',
+        price: 25000,
+        badge: '25K',
+        name: { vi: 'Nước ép dưa hấu', en: 'Watermelon Juice', zh: '西瓜汁' },
+        subName: { vi: 'Watermelon Juice | 西瓜汁', en: 'Pure Chilled Watermelon', zh: '冰爽纯纯西瓜汁' },
+        desc: { 
+          vi: 'Dưa hấu thanh mát ngọt ngào, xua tan cơn khát tức thì.', 
+          en: 'Hydrating sweet red watermelon pressed cold.',
+          zh: '红肉甜西瓜冷榨，夏日消暑解渴首选。'
+        }
+      },
+
+      // 4. TEA
+      {
+        id: 'tra-tac',
+        group: 'tea',
+        price: 15000,
+        badge: '15K',
+        name: { vi: 'Trà tắc', en: 'Kumquat Tea', zh: '青金桔茶' },
+        subName: { vi: 'Kumquat Tea | 青金桔茶', en: 'Iced Jasmine Kumquat Tea', zh: '冰镇清香青金桔茶' },
+        desc: { 
+          vi: 'Trà tắc truyền thống chua ngọt mộc mạc đã khát.', 
+          en: 'Rustic Vietnamese kumquat tea, citrus sweet and tart.',
+          zh: '经典街头风味青金桔茶，酸甜开胃。'
+        }
+      },
+      {
+        id: 'tra-mang-cau',
+        group: 'tea',
+        price: 25000,
+        badge: 'HOT 25K',
+        name: { vi: 'Trà mãng cầu', en: 'Soursop Tea', zh: '番荔枝茶' },
+        subName: { vi: 'Soursop Tea | 番荔枝茶', en: 'Fresh Soursop Fruit Jasmine Tea', zh: '鲜果果肉 番荔枝茶' },
+        desc: { 
+          vi: 'Thịt mãng cầu tươi dầm ngọt ngào trong từng ngụm trà mát.', 
+          en: 'Real shredded soursop pulp in crisp brewed tea.',
+          zh: '新鲜番荔枝果肉现撕，果香馥郁甜美。'
+        }
+      },
+      {
+        id: 'tra-hoa-qua',
+        group: 'tea',
+        price: 25000,
+        badge: '25K',
+        name: { vi: 'Trà hoa quả', en: 'Mixed Fruit Tea', zh: '综合水果茶' },
+        subName: { vi: 'Mixed Fruit Tea | 综合水果茶', en: 'Tropical Mixed Fresh Fruit Tea', zh: '缤纷热带 综合水果茶' },
+        desc: { 
+          vi: 'Nhiều loại trái cây tươi ngon hòa quyện cốt trà thanh dịu.', 
+          en: 'Melange of fresh fruits steeped with floral tea.',
+          zh: '多种鲜果组合搭配，甘醇芬芳。'
+        }
+      },
+      {
+        id: 'man-mang-cau',
+        group: 'tea',
+        price: 30000,
+        badge: 'ĐẶC BIỆT 30K',
+        name: { vi: 'Mận mãng cầu', en: 'Plum Soursop Tea', zh: '李子刺果番荔枝茶' },
+        subName: { vi: 'Plum Soursop Tea | 李子刺果番荔枝茶', en: 'Unique Plum & Soursop Tea', zh: '特色李子刺果番荔枝茶' },
+        desc: { 
+          vi: 'Vị mận chua ngọt độc đáo kết hợp cùng mãng cầu tươi.', 
+          en: 'Distinct northern plum tartness balanced with soursop.',
+          zh: '特色李子酸甜交织鲜爽番荔枝，风味独具一格。'
+        }
+      },
+      {
+        id: 'tra-mang-cut',
+        group: 'tea',
+        price: 30000,
+        badge: 'HOT TREND 30K',
+        name: { vi: 'Trà măng cụt chanh leo', en: 'Mangosteen Passion Fruit Tea', zh: '山竹百香果茶' },
+        subName: { vi: 'Mangosteen Passion Fruit Tea | 山竹百香果茶', en: 'Signature Mangosteen & Passionfruit', zh: '招牌爆款 山竹百香果茶' },
+        desc: { 
+          vi: 'Măng cụt giòn ngọt kết hợp chanh leo tươi ngát hương.', 
+          en: 'Crunchy sweet mangosteen paired with fragrant passion fruit.',
+          zh: '甜润脆甜山竹与浓香百香果的绝妙搭配。'
+        }
+      }
+    ];
+
+    let currentLang = 'vi';
+    let cart = [];
+    let modalItem = null;
+    let selectedIce = '100%';
+    let selectedSugar = 'standard';
+    let currentFilter = 'all';
+
+    function setLanguage(lang) {
+      if (!DICT[lang]) return;
+      currentLang = lang;
+      localStorage.setItem('aurora_demo_lang', lang);
+
+      ['vi', 'en', 'zh'].forEach(l => {
+        const btn = document.getElementById(`lang-btn-${l}`);
+        if (l === lang) {
+          btn.className = 'lang-pill px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-sun-dark font-black transition-all';
+        } else {
+          btn.className = 'lang-pill px-2.5 py-1 rounded-full text-stone-300 hover:text-white transition-all';
+        }
+      });
+
+      const d = DICT[lang];
+      document.getElementById('nav-sub-brand').textContent = d.subBrand;
+      document.getElementById('nav-menu-link').innerHTML = d.menuLink;
+      document.getElementById('nav-orig-text').textContent = d.origLink;
+      document.getElementById('nav-cart-text').textContent = d.cartText;
+      document.getElementById('ring-text').textContent = d.ringText;
+
+      document.getElementById('b1-tag').textContent = d.b1Tag;
+      document.getElementById('b1-title').innerHTML = d.b1Title;
+      document.getElementById('b1-desc').textContent = d.b1Desc;
+      if (document.getElementById('b1-btn-menu')) document.getElementById('b1-btn-menu').textContent = d.b3BtnMenu;
+      document.getElementById('b1-scroll-cue').innerHTML = `<i data-lucide="arrow-down" class="w-4 h-4 animate-bounce"></i> ${d.b1Scroll}`;
+
+      document.getElementById('b2-tag').textContent = d.b2Tag;
+      document.getElementById('b2-title').innerHTML = d.b2Title;
+      document.getElementById('b2-desc').textContent = d.b2Desc;
+      if (document.getElementById('b2-btn-menu')) document.getElementById('b2-btn-menu').textContent = d.b3BtnMenu;
+
+      document.getElementById('b3-tag').textContent = d.b3Tag;
+      document.getElementById('b3-title').innerHTML = d.b3Title;
+      document.getElementById('b3-desc').textContent = d.b3Desc;
+      document.getElementById('b3-btn-menu').textContent = d.b3BtnMenu;
+
+      document.getElementById('mob-delivery-tag').textContent = d.mobDelivery;
+      document.getElementById('mob-hero-sub').textContent = d.mobHeroSub;
+      document.getElementById('mob-hero-desc').textContent = d.mobHeroDesc;
+      document.getElementById('mob-btn-menu-text').textContent = d.mobBtnMenu;
+      document.getElementById('mob-btn-call').textContent = d.mobBtnCall;
+      document.getElementById('mob-btn-zalo').textContent = d.mobBtnZalo;
+
+      document.getElementById('mob-stat-1').textContent = d.mobStat1;
+      document.getElementById('mob-stat-1-sub').textContent = d.mobStat1Sub;
+      document.getElementById('mob-stat-2').textContent = d.mobStat2;
+      document.getElementById('mob-stat-2-sub').textContent = d.mobStat2Sub;
+      document.getElementById('mob-stat-3').textContent = d.mobStat3;
+      document.getElementById('mob-stat-3-sub').textContent = d.mobStat3Sub;
+
+      document.getElementById('qb-t1').textContent = d.qbT1;
+      document.getElementById('qb-d1').textContent = d.qbD1;
+      document.getElementById('qb-t2').textContent = d.qbT2;
+      document.getElementById('qb-d2').innerHTML = d.qbD2;
+      document.getElementById('qb-t3').textContent = d.qbT3;
+      document.getElementById('qb-d3').textContent = d.qbD3;
+
+      document.getElementById('menu-tag').textContent = d.menuTag;
+      document.getElementById('menu-title').textContent = d.menuTitle;
+      document.getElementById('menu-desc').textContent = d.menuDesc;
+
+      document.getElementById('btn-cat-all').textContent = d.catAll;
+      document.getElementById('btn-cat-coffee').textContent = d.catCoffee;
+      document.getElementById('btn-cat-non-coffee').textContent = d.catNonCoffee;
+      document.getElementById('btn-cat-juice').textContent = d.catJuice;
+      document.getElementById('btn-cat-tea').textContent = d.catTea;
+
+      document.getElementById('btn-orig-image-text').textContent = d.btnOrigImage;
+
+      document.getElementById('lbl-ice').textContent = d.lblIce;
+      document.getElementById('lbl-sugar').textContent = d.lblSugar;
+      document.getElementById('lbl-note').textContent = d.lblNote;
+      document.getElementById('cust-note').placeholder = d.notePlaceholder;
+
+      document.getElementById('opt-ice-100').textContent = d.ice100;
+      document.getElementById('opt-ice-70').textContent = d.ice70;
+      document.getElementById('opt-ice-50').textContent = d.ice50;
+      document.getElementById('opt-ice-none').textContent = d.iceNone;
+
+      document.getElementById('opt-sug-std').textContent = d.sugStd;
+      document.getElementById('opt-sug-70').textContent = d.sug70;
+      document.getElementById('opt-sug-50').textContent = d.sug50;
+      document.getElementById('opt-sug-none').textContent = d.sugNone;
+
+      document.getElementById('drawer-title').textContent = d.drawerTitle;
+      document.getElementById('empty-title').textContent = d.emptyTitle;
+      document.getElementById('empty-desc').textContent = d.emptyDesc;
+      document.getElementById('empty-btn').textContent = d.emptyBtn;
+      document.getElementById('total-lbl').textContent = d.totalLbl;
+      document.getElementById('btn-zalo-order').textContent = d.btnZaloOrder;
+      document.getElementById('btn-direct-call').textContent = d.btnDirectCall;
+
+      document.getElementById('orig-modal-title').textContent = d.origModalTitle;
+      document.getElementById('orig-modal-close').textContent = d.origModalClose;
+
+      document.getElementById('ft-tagline').textContent = d.ftTagline;
+      document.getElementById('ft-disclaimer').textContent = d.ftDisclaimer;
+
+      if (document.getElementById('nav-loc-link')) document.getElementById('nav-loc-link').innerHTML = d.navLocLink;
+      if (document.getElementById('mob-nav-menu-link')) document.getElementById('mob-nav-menu-link').innerHTML = d.menuLink;
+      if (document.getElementById('mob-nav-loc-link')) document.getElementById('mob-nav-loc-link').innerHTML = d.navLocLink;
+      if (document.getElementById('loc-tag')) document.getElementById('loc-tag').innerHTML = `<i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-600"></i> ${d.locTag}`;
+      if (document.getElementById('loc-title')) document.getElementById('loc-title').textContent = d.locTitle;
+      if (document.getElementById('loc-desc')) document.getElementById('loc-desc').textContent = d.locDesc;
+      if (document.getElementById('loc-badge-open')) document.getElementById('loc-badge-open').textContent = d.locBadgeOpen;
+      if (document.getElementById('loc-tagline-text')) document.getElementById('loc-tagline-text').textContent = d.locTaglineText;
+      if (document.getElementById('loc-lbl-addr')) document.getElementById('loc-lbl-addr').textContent = d.locLblAddr;
+      if (document.getElementById('loc-val-addr')) document.getElementById('loc-val-addr').textContent = d.locValAddr;
+      if (document.getElementById('loc-lbl-rad')) document.getElementById('loc-lbl-rad').textContent = d.locLblRad;
+      if (document.getElementById('loc-val-rad')) document.getElementById('loc-val-rad').textContent = d.locValRad;
+      if (document.getElementById('loc-val-rad-sub')) document.getElementById('loc-val-rad-sub').textContent = d.locValRadSub;
+      if (document.getElementById('loc-lbl-hotline')) document.getElementById('loc-lbl-hotline').textContent = d.locLblHotline;
+      if (document.getElementById('loc-btn-map')) document.getElementById('loc-btn-map').textContent = d.locBtnMap;
+      if (document.getElementById('loc-btn-call')) document.getElementById('loc-btn-call').textContent = d.locBtnCall;
+      if (document.getElementById('loc-map-header')) document.getElementById('loc-map-header').textContent = d.locMapHeader;
+      if (document.getElementById('loc-map-full-link')) document.getElementById('loc-map-full-link').textContent = d.locMapFullLink;
+      if (document.getElementById('loc-badge-pin-title')) document.getElementById('loc-badge-pin-title').textContent = d.locBadgePinTitle;
+      if (document.getElementById('loc-badge-pin-sub')) document.getElementById('loc-badge-pin-sub').textContent = d.locBadgePinSub;
+      if (document.getElementById('loc-feat1-title')) document.getElementById('loc-feat1-title').textContent = d.locFeat1Title;
+      if (document.getElementById('loc-feat1-desc')) document.getElementById('loc-feat1-desc').textContent = d.locFeat1Desc;
+      if (document.getElementById('loc-feat2-title')) document.getElementById('loc-feat2-title').textContent = d.locFeat2Title;
+      if (document.getElementById('loc-feat2-desc')) document.getElementById('loc-feat2-desc').textContent = d.locFeat2Desc;
+      if (document.getElementById('loc-feat3-title')) document.getElementById('loc-feat3-title').textContent = d.locFeat3Title;
+      if (document.getElementById('loc-feat3-desc')) document.getElementById('loc-feat3-desc').textContent = d.locFeat3Desc;
+      if (document.getElementById('cart-delivery-notice')) document.getElementById('cart-delivery-notice').textContent = d.cartDeliveryNotice;
+
+      renderMenuGrid(currentFilter);
+      updateCartUI();
+      lucide.createIcons();
+    }
+
+    const video = document.getElementById('hero-video');
+    const stage = document.getElementById('stage');
+    const ringCircle = document.getElementById('ring-circle');
+    const pinnedContainer = document.getElementById('hero-experience');
+
+    function scrollToMenuSection(e) {
+      if (e) e.preventDefault();
+      const menuEl = document.getElementById('menu');
+      if (!menuEl) return;
+      const headerHeight = 70;
+      const targetY = Math.max(0, menuEl.getBoundingClientRect().top + window.scrollY - headerHeight);
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+
+    function isStaticHeroNeeded() {
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isSaveData = navigator.connection && (navigator.connection.saveData || /2g/.test(navigator.connection.effectiveType));
+      return isReducedMotion || isSaveData;
+    }
+
+    async function initDesktopHeroVideo() {
+      if (isStaticHeroNeeded()) return;
+
+      try {
+        const response = await fetch('assets/hero-scrub.mp4?v=6s-luxury');
+        const reader = response.body.getReader();
+        const contentLength = +(response.headers.get('Content-Length') || 3800000);
+        let receivedLength = 0;
+        let chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          receivedLength += value.length;
+          const progress = Math.min(1, receivedLength / contentLength);
+          ringCircle.style.strokeDashoffset = 63 * (1 - progress);
+        }
+
+        const blob = new Blob(chunks, { type: 'video/mp4' });
+        video.src = URL.createObjectURL(blob);
+        video.load();
+
+        const onReady = () => {
+          stage.classList.add('video-ready');
+          requestVideoSeek(currentProgress * (video.duration || 6));
+          setTimeout(() => {
+            const ring = document.getElementById('video-progress-ring');
+            if (ring) ring.style.opacity = '0';
+          }, 2000);
+        };
+
+        video.addEventListener('loadeddata', onReady, { once: true });
+        video.addEventListener('canplaythrough', onReady, { once: true });
+
+        // Mở khóa tua video mượt trên iOS/Android khi chạm tay lần đầu
+        window.addEventListener('touchstart', () => {
+          if (video && video.paused) {
+            video.play().then(() => {
+              video.pause();
+              requestVideoSeek(currentProgress * (video.duration || 6));
+            }).catch(() => {});
+          }
+        }, { once: true, passive: true });
+
+      } catch (err) {}
+    }
+
+    let targetProgress = 0;
+    let currentProgress = 0;
+    let targetLocalProgress = 0;
+    let currentLocalProgress = 0;
+    let rafId = null;
+    let lastTime = 0;
+    let seekBusy = false;
+    let pendingSeekTime = null;
+
+    function getHeroScrollProgress() {
+      const menuSection = document.getElementById('menu');
+      if (menuSection) {
+        const endScrollY = menuSection.offsetTop + menuSection.offsetHeight - window.innerHeight * 0.85;
+        if (endScrollY > 0) {
+          return Math.max(0, Math.min(1, window.scrollY / endScrollY));
+        }
+      }
+      if (!pinnedContainer) return 0;
+      const rect = pinnedContainer.getBoundingClientRect();
+      const scrollDist = -rect.top;
+      const maxScroll = pinnedContainer.offsetHeight - window.innerHeight;
+      if (maxScroll <= 0) return 0;
+      return Math.max(0, Math.min(1, scrollDist / maxScroll));
+    }
+
+    function getHeroSectionLocalProgress() {
+      if (!pinnedContainer) return 0;
+      const rect = pinnedContainer.getBoundingClientRect();
+      const scrollDist = -rect.top;
+      const maxScroll = Math.max(1, pinnedContainer.offsetHeight - window.innerHeight);
+      return Math.max(0, Math.min(1, scrollDist / maxScroll));
+    }
+
+    function requestVideoSeek(time) {
+      if (!video || !video.duration || isNaN(time)) return;
+      if (seekBusy) {
+        pendingSeekTime = time;
+        return;
+      }
+      seekBusy = true;
+      video.currentTime = time;
+    }
+
+    if (video) {
+      video.addEventListener('seeked', () => {
+        seekBusy = false;
+        if (pendingSeekTime !== null) {
+          const next = pendingSeekTime;
+          pendingSeekTime = null;
+          requestVideoSeek(next);
+        }
+      });
+      video.addEventListener('error', () => {
+        seekBusy = false;
+        pendingSeekTime = null;
+      });
+    }
+
+    function smoothStep(edge0, edge1, x) {
+      const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+      return t * t * (3 - 2 * t);
+    }
+
+    function applyBandTransform(el, p, fadeInStart, peakStart, peakEnd, fadeOutEnd, isFirst) {
+      if (!el) return;
+      let opacity = 0;
+      let translateY = 0;
+      let blurPx = 0;
+
+      if (isFirst && p <= peakStart) {
+        opacity = 1;
+        translateY = 0;
+        blurPx = 0;
+      } else if (p < fadeInStart || p > fadeOutEnd) {
+        opacity = 0;
+        translateY = p < fadeInStart ? 44 : -44;
+        blurPx = 4;
+      } else if (p < peakStart) {
+        const t = smoothStep(fadeInStart, peakStart, p);
+        opacity = t;
+        translateY = (1 - t) * 42;
+        blurPx = (1 - t) * 3.5;
+      } else if (p <= peakEnd) {
+        opacity = 1;
+        const drift = (p - peakStart) / Math.max(0.001, peakEnd - peakStart);
+        translateY = -drift * 12;
+        blurPx = 0;
+      } else {
+        const t = smoothStep(peakEnd, fadeOutEnd, p);
+        opacity = 1 - t;
+        translateY = -12 - t * 38;
+        blurPx = t * 3.5;
+      }
+
+      el.style.opacity = opacity.toFixed(3);
+      el.style.transform = `translate3d(0, ${translateY.toFixed(2)}px, 0)`;
+      el.style.filter = blurPx > 0.15 ? `blur(${blurPx.toFixed(2)}px)` : 'none';
+      if (opacity > 0.45) {
+        el.classList.add('interactive');
+      } else {
+        el.classList.remove('interactive');
+      }
+    }
+
+    function updateCaptionBands(p) {
+      const b1 = document.getElementById('band-1');
+      const b2 = document.getElementById('band-2');
+      const b3 = document.getElementById('band-3');
+      if (!b1 || !b2 || !b3) return;
+
+      // Chuyển chữ nội suy mượt 60fps theo tiến độ cuộn (overlapping cross-fade + trượt dọc tự nhiên)
+      applyBandTransform(b1, p, 0.00, 0.00, 0.24, 0.38, true);
+      applyBandTransform(b2, p, 0.26, 0.39, 0.60, 0.74, false);
+      applyBandTransform(b3, p, 0.62, 0.75, 0.92, 1.00, false);
+    }
+
+    function tickLerp(now) {
+      const dt = Math.min(100, now - (lastTime || now));
+      lastTime = now;
+      const k = 0.15;
+      const factor = 1 - Math.pow(1 - k, dt / 16.667);
+      currentProgress += (targetProgress - currentProgress) * factor;
+      currentLocalProgress += (targetLocalProgress - currentLocalProgress) * factor;
+
+      if (Math.abs(targetProgress - currentProgress) < 0.0004 && Math.abs(targetLocalProgress - currentLocalProgress) < 0.0004) {
+        currentProgress = targetProgress;
+        currentLocalProgress = targetLocalProgress;
+        rafId = null;
+        lastTime = 0;
+      } else {
+        rafId = requestAnimationFrame(tickLerp);
+      }
+
+      if (video && video.duration) {
+        requestVideoSeek(currentProgress * video.duration);
+      }
+      drawPhinDrip(currentProgress);
+      updateCaptionBands(currentLocalProgress);
+    }
+
+    const dripCanvas = document.getElementById('hero-drip-canvas');
+    const dctx = dripCanvas ? dripCanvas.getContext('2d') : null;
+
+    function resizeDripCanvas() {
+      if (!dripCanvas) return;
+      dripCanvas.width = window.innerWidth;
+      dripCanvas.height = window.innerHeight;
+      drawPhinDrip(currentProgress);
+    }
+
+    function drawPhinDrip(progress) {
+      if (!dctx || !dripCanvas) return;
+      const w = dripCanvas.width;
+      const h = dripCanvas.height;
+      dctx.clearRect(0, 0, w, h);
+
+      // Tọa độ mặt cà phê khớp với khung hình Luxury Cinema (w=512, h=288, x=225) và 3 đường chảy của phin
+      const glassSurfaceY = h * ((394 - progress * 275) / 288);
+      const streams = [
+        { x: w * 0.473, speed: 4.2, offset: 0.35, maxRx: w * 0.048 },
+        { x: w * 0.523, speed: 5.7, offset: 0.00, maxRx: w * 0.065 },
+        { x: w * 0.590, speed: 5.1, offset: 0.20, maxRx: w * 0.060 }
+      ];
+
+      // Gợn sóng vàng hổ phách dịu nhẹ tại cả 3 vị trí giọt cà phê rơi xuống mặt ly
+      if (glassSurfaceY > 0 && glassSurfaceY < h) {
+        streams.forEach(s => {
+          const waveCycle = (progress * s.speed + s.offset) % 1;
+          for (let i = 0; i < 2; i++) {
+            const phase = (waveCycle + i * 0.48) % 1;
+            const rx = phase * s.maxRx;
+            const ry = rx * 0.16;
+            const alpha = (1 - phase) * 0.28;
+            if (rx > 3) {
+              dctx.strokeStyle = `rgba(245, 180, 50, ${alpha})`;
+              dctx.lineWidth = 1.2 * (1 - phase);
+              dctx.beginPath();
+              dctx.ellipse(s.x, glassSurfaceY, rx, ry, 0, 0, Math.PI * 2);
+              dctx.stroke();
+            }
+          }
+        });
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      targetProgress = getHeroScrollProgress();
+      targetLocalProgress = getHeroSectionLocalProgress();
+      if (rafId === null) {
+        rafId = requestAnimationFrame(tickLerp);
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', resizeDripCanvas);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('aurora_demo_lang') || 'vi';
+      setLanguage(savedLang);
+      loadCartFromStorage();
+      loadCustomerDraft();
+      initDesktopHeroVideo();
+      resizeDripCanvas();
+      targetProgress = getHeroScrollProgress();
+      targetLocalProgress = getHeroSectionLocalProgress();
+      currentProgress = targetProgress;
+      currentLocalProgress = targetLocalProgress;
+      updateCaptionBands(currentLocalProgress);
+    });
+
+    function renderMenuGrid(filter) {
+      currentFilter = filter;
+      const container = document.getElementById('menu-grid');
+      const list = filter === 'all' 
+        ? MENU_ITEMS 
+        : MENU_ITEMS.filter(item => item.group === filter);
+
+      const d = DICT[currentLang];
+
+      container.innerHTML = list.map(item => `
+        <div class="espresso-menu-card rounded-3xl p-4 sm:p-5 flex flex-col justify-between transition-all group cursor-pointer" onclick="openCustomizeModal('${item.id}')">
+          <div>
+            <div class="flex items-center justify-between mb-2 sm:mb-3">
+              <span class="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm">
+                ${item.badge}
+              </span>
+              <span class="font-heading font-black text-lg text-orange-700">
+                ${formatVND(item.price)}
+              </span>
+            </div>
+
+            <h4 class="font-drypt text-lg sm:text-xl text-sun-dark group-hover:text-orange-700 transition-colors leading-tight">
+              ${item.name[currentLang] || item.name.vi}
+            </h4>
+            <p class="text-[11px] text-amber-900/70 italic mt-0.5 leading-snug">
+              ${item.subName[currentLang] || item.subName.vi}
+            </p>
+
+            <p class="text-xs text-stone-700 font-medium mt-2 sm:mt-3 leading-relaxed">
+              ${item.desc[currentLang] || item.desc.vi}
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-amber-300/60 flex items-center justify-between text-xs">
+            <span class="text-[11px] font-semibold text-amber-900/70">
+              ${currentLang === 'zh' ? '冰量与甜度' : (currentLang === 'en' ? 'Ice & Sweetness' : 'Chọn đá & đường')}
+            </span>
+            <button class="px-3.5 py-1.5 bg-gradient-to-r from-orange-600 via-amber-500 to-yellow-500 hover:from-orange-700 hover:to-amber-600 text-white font-black rounded-xl flex items-center gap-1 shadow-md shadow-amber-500/25 transition-transform group-hover:scale-105">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> ${d.chooseBtn}
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterMenu(group) {
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.remove('bg-gradient-to-r', 'from-orange-600', 'to-amber-500', 'text-white', 'active');
+        btn.classList.add('bg-white', 'text-stone-800');
+      });
+      event.target.classList.add('bg-gradient-to-r', 'from-orange-600', 'to-amber-500', 'text-white', 'active');
+      event.target.classList.remove('bg-white', 'text-stone-800');
+      renderMenuGrid(group);
+    }
+
+    function openCustomizeModal(itemId) {
+      const item = MENU_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+      modalItem = item;
+      const d = DICT[currentLang];
+
+      document.getElementById('cust-group').textContent = item.group.toUpperCase();
+      document.getElementById('cust-title').textContent = item.name[currentLang] || item.name.vi;
+      document.getElementById('cust-sub').textContent = item.subName[currentLang] || item.subName.vi;
+      document.getElementById('cust-price').textContent = formatVND(item.price);
+      document.getElementById('cust-btn-label').textContent = `${d.addBtnPrefix}${formatVND(item.price)}`;
+      document.getElementById('cust-note').value = '';
+
+      setOpt('ice', '100%');
+      setOpt('sugar', 'standard');
+
+      const modal = document.getElementById('customize-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCustomizeModal() {
+      const modal = document.getElementById('customize-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modalItem = null;
+    }
+
+    function setOpt(type, val) {
+      if (type === 'ice') {
+        selectedIce = val;
+        document.querySelectorAll('.opt-ice').forEach(btn => {
+          btn.className = "opt-ice py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400";
+        });
+        if (event && event.target) {
+          event.target.className = "opt-ice active py-2 rounded-xl border border-amber-500 bg-amber-500 text-sun-dark font-black";
+        }
+      } else if (type === 'sugar') {
+        selectedSugar = val;
+        document.querySelectorAll('.opt-sugar').forEach(btn => {
+          btn.className = "opt-sugar py-2 rounded-xl border border-stone-200 bg-stone-50 text-stone-700 hover:border-amber-400";
+        });
+        if (event && event.target) {
+          event.target.className = "opt-sugar active py-2 rounded-xl border border-amber-500 bg-amber-500 text-sun-dark font-black";
+        }
+      }
+    }
+
+    function confirmAddToCart() {
+      if (!modalItem) return;
+      const note = document.getElementById('cust-note').value.trim();
+      const d = DICT[currentLang];
+      
+      let iceTxt = selectedIce === '100%' ? d.ice100 : (selectedIce === '70%' ? d.ice70 : (selectedIce === '50%' ? d.ice50 : d.iceNone));
+      let sugTxt = selectedSugar === 'standard' ? d.sugStd : (selectedSugar === '70%' ? d.sug70 : (selectedSugar === '50%' ? d.sug50 : d.sugNone));
+
+      const spec = `${iceTxt}, ${sugTxt}${note ? ' (' + note + ')' : ''}`;
+
+      addToCart({
+        id: `${modalItem.id}-${selectedIce}-${selectedSugar}`,
+        title: modalItem.name[currentLang] || modalItem.name.vi,
+        sub: modalItem.subName[currentLang] || modalItem.subName.vi,
+        price: modalItem.price,
+        spec: spec,
+        qty: 1
+      });
+
+      closeCustomizeModal();
+    }
+
+    function addToCart(item) {
+      const existing = cart.find(i => i.id === item.id);
+      if (existing) {
+        existing.qty += item.qty;
+      } else {
+        cart.push(item);
+      }
+      saveCartToStorage();
+      updateCartUI();
+      showToast(DICT[currentLang].toastTitle, `${item.title} (${item.qty})`);
+      openCart();
+    }
+
+    function updateCartQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      }
+      saveCartToStorage();
+      updateCartUI();
+    }
+
+    function removeCartItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCartToStorage();
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cart-badge-count').textContent = count;
+      document.getElementById('cart-items-count-text').textContent = `${count}${DICT[currentLang].itemCountSuffix}`;
+
+      const container = document.getElementById('cart-items-container');
+      const bodyScroll = document.getElementById('cart-body-scroll');
+      const emptyState = document.getElementById('cart-empty-state');
+      const footer = document.getElementById('cart-footer');
+
+      if (cart.length === 0) {
+        container.innerHTML = '';
+        if (bodyScroll) bodyScroll.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        footer.classList.add('hidden');
+      } else {
+        if (bodyScroll) bodyScroll.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        footer.classList.remove('hidden');
+
+        container.innerHTML = cart.map(item => `
+          <div class="bg-white p-3.5 rounded-2xl border border-amber-200/90 flex gap-3 items-center shadow-sm">
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-black text-sun-dark truncate">${item.title}</h4>
+              <p class="text-[11px] text-orange-700 font-semibold truncate">${item.spec}</p>
+              <div class="flex items-center justify-between mt-2">
+                <div class="flex items-center gap-2 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
+                  <button onclick="updateCartQty('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 font-bold text-xs">-</button>
+                  <span class="text-xs font-bold text-stone-900 px-1">${item.qty}</span>
+                  <button onclick="updateCartQty('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 font-bold text-xs">+</button>
+                </div>
+                <span class="text-xs font-black text-sun-dark">${formatVND(item.price * item.qty)}</span>
+              </div>
+            </div>
+            <button onclick="removeCartItem('${item.id}')" class="text-stone-400 hover:text-rose-500 p-1.5 shrink-0">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `).join('');
+      }
+
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      document.getElementById('cart-total-display').textContent = formatVND(total);
+
+      lucide.createIcons();
+    }
+
+    function openCart() {
+      const drawer = document.getElementById('cart-drawer');
+      const overlay = document.getElementById('cart-drawer-overlay');
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      drawer.classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart() {
+      const drawer = document.getElementById('cart-drawer');
+      const overlay = document.getElementById('cart-drawer-overlay');
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      drawer.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    }
+
+    let orderMode = 'delivery';
+    let selectedArea = '';
+    let customerGpsLink = '';
+    let customerDistanceKm = null;
+    let latestOrderTicketText = '';
+    let isWideCartMap = false;
+    const STORE_COORDS = { lat: 21.028511, lng: 105.854444 };
+
+    function openDemoFacebook() {
+      showToast('Chế độ Bản Mẫu Demo', 'Khi bàn giao web, nút này sẽ mở trực tiếp Fanpage/Messenger của quán!');
+    }
+
+    function toggleWideCartMap() {
+      isWideCartMap = !isWideCartMap;
+      const drawer = document.getElementById('cart-drawer');
+      const mapPanel = document.getElementById('cart-map-panel');
+      const lbl = document.getElementById('lbl-expand-cart-map');
+      if (!drawer) return;
+      if (isWideCartMap) {
+        drawer.className = "w-full flex-1 sm:flex-initial sm:w-[310px] md:w-[330px] shrink-0 bg-sun-canvas border-t sm:border-t-0 sm:border-l border-amber-200 sm:h-full flex flex-col shadow-2xl relative z-20 transform transition-all duration-300 overflow-hidden";
+        if (mapPanel) mapPanel.className = "flex h-[56vh] sm:h-full sm:flex-1 min-w-[52%] lg:min-w-[60%] relative bg-stone-900 overflow-hidden flex-col transition-all duration-300 shrink-0";
+        if (lbl) lbl.textContent = "Thu gọn bản đồ";
+      } else {
+        drawer.className = "w-full flex-1 sm:flex-initial sm:w-[370px] md:w-[390px] lg:w-[420px] shrink-0 bg-sun-canvas border-t sm:border-t-0 sm:border-l border-amber-200 sm:h-full flex flex-col shadow-2xl relative z-20 transform transition-all duration-300 overflow-hidden";
+        if (mapPanel) mapPanel.className = "flex h-[34vh] sm:h-full sm:flex-1 min-w-[52%] lg:min-w-[60%] relative bg-stone-900 overflow-hidden flex-col transition-all duration-300 shrink-0";
+        if (lbl) lbl.textContent = "Mở rộng bản đồ";
+      }
+    }
+
+    function setOrderMode(mode) {
+      orderMode = mode;
+      const btnDel = document.getElementById('tab-mode-delivery');
+      const btnPick = document.getElementById('tab-mode-pickup');
+      const delBlock = document.getElementById('delivery-address-block');
+      const pickBlock = document.getElementById('pickup-info-block');
+      const optAsap = document.getElementById('opt-time-asap');
+      const lblNote = document.getElementById('lbl-chk-note');
+      const inpNote = document.getElementById('chk-note');
+
+      if (mode === 'delivery') {
+        btnDel.className = "py-2 px-3 rounded-xl font-black bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-sm flex items-center justify-center gap-1.5 transition-all";
+        btnPick.className = "py-2 px-3 rounded-xl font-bold text-stone-700 hover:bg-white/60 flex items-center justify-center gap-1.5 transition-all";
+        delBlock.classList.remove('hidden');
+        pickBlock.classList.add('hidden');
+        if (optAsap) {
+          optAsap.value = "Giao ngay (15 - 25 phút)";
+          optAsap.textContent = "⚡ Giao ngay (15-25p)";
+        }
+        if (lblNote) lblNote.textContent = "Lời nhắn khi giao hàng (Tùy chọn)";
+        if (inpNote) inpNote.placeholder = "VD: Gọi điện khi tới cổng, xin thêm túi treo xe...";
+      } else {
+        btnPick.className = "py-2 px-3 rounded-xl font-black bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-sm flex items-center justify-center gap-1.5 transition-all";
+        btnDel.className = "py-2 px-3 rounded-xl font-bold text-stone-700 hover:bg-white/60 flex items-center justify-center gap-1.5 transition-all";
+        delBlock.classList.add('hidden');
+        pickBlock.classList.remove('hidden');
+        if (optAsap) {
+          optAsap.value = "Lấy ngay tại quán";
+          optAsap.textContent = "⚡ Lấy ngay";
+        }
+        if (lblNote) lblNote.textContent = "Lời nhắn cho quán (Tùy chọn)";
+        if (inpNote) inpNote.placeholder = "VD: Pha sẵn giúp mình, xin thêm túi treo xe...";
+      }
+      saveCustomerDraft();
+    }
+
+    function selectQuickArea(area) {
+      selectedArea = area;
+      const addrInput = document.getElementById('chk-address');
+      if (addrInput) {
+        addrInput.value = `${area}`;
+      }
+      const shortName = area.split(',')[0].trim();
+      document.querySelectorAll('.area-chip').forEach(btn => {
+        if (btn.textContent.includes(shortName)) {
+          btn.className = "area-chip px-2.5 py-1 rounded-lg text-[11px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-white border border-orange-500 shadow-sm transition-all";
+        } else {
+          btn.className = "area-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all";
+        }
+      });
+      // Cập nhật bản đồ bên trái trỏ về khu vực khách chọn
+      const mapIframe = document.getElementById('cart-map-iframe');
+      if (mapIframe) {
+        mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent('Hoàn Kiếm, Hà Nội')}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+      }
+      saveCustomerDraft();
+    }
+
+    function calcHaversineKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function detectCustomerGPS() {
+      const badge = document.getElementById('gps-distance-badge');
+      const btn = document.getElementById('btn-gps-detect');
+      if (!navigator.geolocation) {
+        alert('Trình duyệt của bạn không hỗ trợ định vị GPS.');
+        return;
+      }
+      if (btn) btn.innerHTML = '<span>⏳ Đang lấy vị trí...</span>';
+      navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+        const straightKm = calcHaversineKm(STORE_COORDS.lat, STORE_COORDS.lng, latitude, longitude);
+        const roadKm = +(straightKm * 1.25).toFixed(1);
+        customerDistanceKm = roadKm;
+        customerGpsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+        if (badge) {
+          badge.classList.remove('hidden');
+          if (roadKm <= 2) {
+            badge.className = "p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 font-semibold";
+            badge.innerHTML = `✅ Vị trí của bạn cách tâm quán mẫu <strong>~${roadKm} km</strong> (Nằm trong phạm vi giao nhanh 2km).`;
+          } else {
+            badge.className = "p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-[11px] text-amber-900 font-semibold";
+            badge.innerHTML = `📍 Đã ghim GPS của bạn! (Khi cài đặt thực tế cho quán, hệ thống sẽ tính khoảng cách 2km từ tọa độ của quán tới vị trí của khách).`;
+          }
+        }
+        const mapIframe = document.getElementById('cart-map-iframe');
+        if (mapIframe) {
+          mapIframe.src = `https://maps.google.com/maps?q=${latitude},${longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+        }
+        if (btn) btn.innerHTML = '<span>✓ Đã ghim GPS</span>';
+        saveCustomerDraft();
+      }, () => {
+        if (btn) btn.innerHTML = '<span>📍 Định vị GPS & Tính km</span>';
+        alert('Không thể truy cập GPS. Bạn vui lòng chọn khu vực hoặc nhập địa chỉ vào ô bên dưới nhé!');
+      }, { timeout: 8000 });
+    }
+
+    function toggleCustomTime() {
+      const sel = document.getElementById('chk-time');
+      const customInp = document.getElementById('chk-custom-time');
+      if (sel && customInp) {
+        if (sel.value === 'custom') {
+          customInp.classList.remove('hidden');
+          customInp.focus();
+        } else {
+          customInp.classList.add('hidden');
+        }
+      }
+      saveCustomerDraft();
+    }
+
+    function saveCustomerDraft() {
+      try {
+        const draft = {
+          mode: orderMode,
+          name: document.getElementById('chk-name')?.value || '',
+          phone: document.getElementById('chk-phone')?.value || '',
+          address: document.getElementById('chk-address')?.value || '',
+          time: document.getElementById('chk-time')?.value || 'Giao ngay (15 - 25 phút)',
+          customTime: document.getElementById('chk-custom-time')?.value || '',
+          payment: 'Chuyển khoản QR Ngân hàng',
+          note: document.getElementById('chk-note')?.value || ''
+        };
+        localStorage.setItem('aurora_demo_customer_draft', JSON.stringify(draft));
+      } catch (e) {}
+    }
+
+    function loadCustomerDraft() {
+      try {
+        const raw = localStorage.getItem('aurora_demo_customer_draft');
+        if (!raw) return;
+        const d = JSON.parse(raw);
+        if (d.name && document.getElementById('chk-name')) document.getElementById('chk-name').value = d.name;
+        if (d.phone && document.getElementById('chk-phone')) document.getElementById('chk-phone').value = d.phone;
+        if (d.address && document.getElementById('chk-address')) document.getElementById('chk-address').value = d.address;
+        if (document.getElementById('chk-payment')) document.getElementById('chk-payment').value = 'Chuyển khoản QR Ngân hàng';
+        if (d.note && document.getElementById('chk-note')) document.getElementById('chk-note').value = d.note;
+        if (d.mode) setOrderMode(d.mode);
+      } catch (e) {}
+    }
+
+    function buildOrderTicketText(orderCode) {
+      const name = (document.getElementById('chk-name')?.value || '').trim() || 'Khách đặt web';
+      const phone = (document.getElementById('chk-phone')?.value || '').trim();
+      const address = (document.getElementById('chk-address')?.value || '').trim();
+      const timeSel = document.getElementById('chk-time')?.value || 'Giao ngay (15 - 25 phút)';
+      const customTime = document.getElementById('chk-custom-time')?.value || '';
+      const timeText = timeSel === 'custom' && customTime ? `Hẹn giờ: ${customTime}` : timeSel;
+      const payment = 'Chuyển khoản QR Ngân hàng';
+      const note = (document.getElementById('chk-note')?.value || '').trim();
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      let lines = [];
+      lines.push(`☕ ĐƠN ĐẶT HÀNG AURORA COFFEE - DEMO (${orderCode})`);
+      lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━`);
+      cart.forEach((item, idx) => {
+        lines.push(`${idx + 1}. ${item.title} x${item.qty} = ${formatVND(item.price * item.qty)}`);
+        lines.push(`   ↳ Tùy chọn: ${item.spec}`);
+      });
+      lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━`);
+      lines.push(`💰 TỔNG TIỀN MÓN: ${formatVND(total)}`);
+      lines.push(`📦 Hình thức: ${orderMode === 'delivery' ? '🛵 Giao tận nơi (Bán kính 2km)' : '🏪 Ghé quán lấy (123 Đường Trung Tâm)'}`);
+      lines.push(`👤 Người nhận: ${name} - SĐT: ${phone}`);
+      if (orderMode === 'delivery') {
+        lines.push(`📍 Địa chỉ giao: ${address}`);
+        if (customerDistanceKm !== null) {
+          lines.push(`📏 Khoảng cách GPS: ~${customerDistanceKm} km`);
+        }
+        if (customerGpsLink) {
+          lines.push(`🗺️ Định vị GPS: ${customerGpsLink}`);
+        }
+      }
+      lines.push(`⏰ Thời gian: ${timeText}`);
+      lines.push(`💳 Thanh toán: ${payment}`);
+      if (note) {
+        lines.push(`📝 Ghi chú: ${note}`);
+      }
+      return lines.join('\n');
+    }
+
+    function orderViaZalo() {
+      if (cart.length === 0) {
+        alert('Vui lòng chọn ít nhất 1 món từ thực đơn trước khi đặt hàng!');
+        return;
+      }
+      const phoneEl = document.getElementById('chk-phone');
+      const addrEl = document.getElementById('chk-address');
+      const phone = (phoneEl?.value || '').trim();
+      const address = (addrEl?.value || '').trim();
+
+      if (!phone) {
+        phoneEl.classList.add('border-rose-500', 'ring-2', 'ring-rose-200');
+        phoneEl.focus();
+        showToast('Thiếu số điện thoại', 'Vui lòng nhập số điện thoại để quán liên hệ giao hàng nhé!');
+        setTimeout(() => phoneEl.classList.remove('border-rose-500', 'ring-2', 'ring-rose-200'), 2500);
+        return;
+      }
+
+      if (orderMode === 'delivery' && !address) {
+        addrEl.classList.add('border-rose-500', 'ring-2', 'ring-rose-200');
+        addrEl.focus();
+        showToast('Thiếu địa chỉ nhận hàng', 'Vui lòng chọn khu vực hoặc nhập địa chỉ giao hàng nhé!');
+        setTimeout(() => addrEl.classList.remove('border-rose-500', 'ring-2', 'ring-rose-200'), 2500);
+        return;
+      }
+
+      saveCustomerDraft();
+      const orderCode = '#CF-' + Math.floor(1000 + Math.random() * 9000);
+      latestOrderTicketText = buildOrderTicketText(orderCode);
+
+      document.getElementById('ticket-code-label').textContent = `Mã đơn: ${orderCode} • Đã sao chép tự động`;
+      document.getElementById('ticket-preview-text').textContent = latestOrderTicketText;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(latestOrderTicketText).catch(() => {});
+      }
+
+      const modal = document.getElementById('order-ticket-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeOrderTicketModal() {
+      const modal = document.getElementById('order-ticket-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function copyOrderTicket() {
+      if (!latestOrderTicketText) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(latestOrderTicketText);
+      }
+      const btnTxt = document.getElementById('btn-copy-ticket-text');
+      if (btnTxt) {
+        btnTxt.textContent = '✓ Đã sao chép!';
+        setTimeout(() => { btnTxt.textContent = 'Sao chép lại'; }, 2000);
+      }
+      showToast('Đã sao chép phiếu đơn', 'Bạn có thể dán (Ctrl+V) trực tiếp vào Zalo quán!');
+    }
+
+    function confirmOpenZaloWithTicket() {
+      if (latestOrderTicketText && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(latestOrderTicketText).catch(() => {});
+      }
+      showToast('Chế độ Bản Mẫu Demo', 'Đã sao chép phiếu đơn! Khi triển khai thực tế sẽ mở Zalo của chủ quán.');
+    }
+
+    function confirmOpenFacebookWithTicket() {
+      if (latestOrderTicketText && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(latestOrderTicketText).catch(() => {});
+      }
+      showToast('Chế độ Bản Mẫu Demo', 'Đã sao chép phiếu đơn! Khi triển khai thực tế sẽ mở Messenger của quán.');
+    }
+
+    function quickSendZaloDirect() {
+      const orderCode = '#CF-' + Math.floor(1000 + Math.random() * 9000);
+      latestOrderTicketText = buildOrderTicketText(orderCode);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(latestOrderTicketText).catch(() => {});
+      }
+      showToast('Chế độ Bản Mẫu Demo', 'Khi bàn giao cho quán, nút này sẽ kết nối thẳng tới Zalo nhận đơn của quán!');
+    }
+
+    function sendOrderSMS() {
+      if (!latestOrderTicketText) return;
+      window.location.href = `sms:0900123456?body=${encodeURIComponent(latestOrderTicketText)}`;
+    }
+
+    function openMenuModal() {
+      document.getElementById('menu-modal').classList.remove('hidden');
+      document.getElementById('menu-modal').classList.add('flex');
+    }
+
+    function closeMenuModal() {
+      document.getElementById('menu-modal').classList.add('hidden');
+      document.getElementById('menu-modal').classList.remove('flex');
+    }
+
+    function openQrPhoneModal() {
+      const m = document.getElementById('qr-phone-modal');
+      if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+    }
+
+    function closeQrPhoneModal() {
+      const m = document.getElementById('qr-phone-modal');
+      if (m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+    }
+
+    function showToast(title, msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-title').textContent = title;
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3000);
+    }
+
+    function saveCartToStorage() {
+      try {
+        localStorage.setItem('aurora_demo_cart_multilang', JSON.stringify(cart));
+      } catch (e) {}
+    }
+
+    function loadCartFromStorage() {
+      try {
+        const saved = localStorage.getItem('aurora_demo_cart_multilang');
+        if (saved) {
+          cart = JSON.parse(saved);
+          updateCartUI();
+        }
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>
